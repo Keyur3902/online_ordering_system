@@ -22,17 +22,19 @@ class OrderList with ChangeNotifier{
       var responsebody = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        print(responsebody);
         orderItem = [Order.fromJson(responsebody)];
+        print(response.statusCode);
+        print('Hello  ${orderItem[0].data.length}');
         return orderItem;
       }
       else {
-        print(responsebody);
+        print('Hello ${responsebody}');
         return orderItem;
       }
     }
     catch (e){
       Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (route) => false);
+      print(e);
       throw e;
     }
   }

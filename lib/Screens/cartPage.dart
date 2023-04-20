@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:online_ordering_system/provider/favoriteProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../provider/cartProvider.dart';
@@ -26,7 +25,6 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
-    final favorite = Provider.of<Favorite>(context);
     final firebase = Provider.of<FirebaseApiCalling>(context);
 
     return Scaffold(

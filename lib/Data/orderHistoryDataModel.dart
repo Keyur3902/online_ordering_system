@@ -17,14 +17,14 @@ class Order {
   List<OrderItem> data;
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
-    status: json["status"],
-    msg: json["msg"],
+    status: json["status"]  ?? 0,
+    msg: json["msg"] ?? '',
     data: List<OrderItem>.from(json["data"].map((x) => OrderItem.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "msg": msg,
+    "msg": msg ,
     "data": List<dynamic>.from(data.map((x) => x.toJson())),
   };
 }
@@ -47,7 +47,7 @@ class OrderItem {
   });
 
   String id;
-  UserId userId;
+  String userId;
   String orderId;
   String productId;
   String title;
@@ -61,8 +61,8 @@ class OrderItem {
   int v;
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
-    id: json["_id"],
-    userId: userIdValues.map[json["userId"]]!,
+    id: json["_id"] ,
+    userId: json["userId"],
     orderId: json["orderId"],
     productId: json["productId"],
     title: json["title"],

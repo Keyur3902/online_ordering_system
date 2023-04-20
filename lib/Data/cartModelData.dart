@@ -18,8 +18,8 @@ class CartData {
   List<CartProduct> data;
 
   factory CartData.fromJson(Map<String, dynamic> json) => CartData(
-    status: json["status"],
-    msg: json["msg"],
+    status: json["status"] ?? 0,
+    msg: json["msg"] ?? '',
     cartTotal: json["cartTotal"]?.toDouble(),
     data: List<CartProduct>.from(json["data"].map((x) => CartProduct.fromJson(x))),
   );
@@ -50,10 +50,10 @@ class CartProduct {
   ProductDetails productDetails;
 
   factory CartProduct.fromJson(Map<String, dynamic> json) => CartProduct(
-    id: json["_id"],
-    userId: json["userId"],
-    cartId: json["cartId"],
-    quantity: json["quantity"],
+    id: json["_id"] ?? '',
+    userId: json["userId"] ?? '',
+    cartId: json["cartId"] ?? '',
+    quantity: json["quantity"] ?? 0,
     itemTotal: json["itemTotal"]?.toDouble(),
     productDetails: ProductDetails.fromJson(json["productDetails"]),
   );
@@ -84,11 +84,11 @@ class ProductDetails {
   String imageUrl;
 
   factory ProductDetails.fromJson(Map<String, dynamic> json) => ProductDetails(
-    id: json["_id"],
-    title: json["title"],
-    description: json["description"],
-    price: json["price"],
-    imageUrl: json["imageUrl"],
+    id: json["_id"] ?? '',
+    title: json["title"] ?? '',
+    description: json["description"] ?? '',
+    price: json["price"] ?? '',
+    imageUrl: json["imageUrl"] ?? '',
   );
 
   Map<String, dynamic> toJson() => {

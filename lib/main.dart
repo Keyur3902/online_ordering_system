@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:online_ordering_system/GetxProject/mainGet.dart';
 import 'package:online_ordering_system/Screens/accountSettingPage.dart';
 import 'package:online_ordering_system/Screens/authentication.dart';
 import 'package:online_ordering_system/Screens/authenticationOnForgotPass.dart';
@@ -45,8 +46,10 @@ void main() async {
     log(fcmToken!);
 
   }
-runApp(const MyApp());
+// runApp(const MyApp());
+runApp(const GetApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
