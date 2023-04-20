@@ -41,7 +41,6 @@ class ProductListControllerGetx extends GetxController{
       }
     }
     catch(e){
-
       Get.offAllNamed('/LoginPage');
       throw e;
     }

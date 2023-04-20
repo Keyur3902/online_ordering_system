@@ -2,6 +2,8 @@ import 'package:badges/badges.dart' as Badge;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:online_ordering_system/GetxProject/ControllerGetx/cartControllerGetx.dart';
+import 'package:online_ordering_system/GetxProject/ControllerGetx/favoriteControllerGetx.dart';
 import 'package:online_ordering_system/GetxProject/ControllerGetx/productControllerGetx.dart';
 
 class ProductListGet extends StatefulWidget {
@@ -15,7 +17,9 @@ class _ProductListGetState extends State<ProductListGet> {
   @override
   Widget build(BuildContext context) {
 
-    final ProductListControllerGetx controller = Get.put(ProductListControllerGetx());
+    final ProductListControllerGetx productControllerGet = Get.put(ProductListControllerGetx());
+    final CartControllerGetx cartControllerGetx = Get.put(CartControllerGetx());
+    final FavoriteControllerGetx favoriteControllerGetx = Get.put(FavoriteControllerGetx());
 
     return SafeArea(
       child: Scaffold(
@@ -123,12 +127,12 @@ class _ProductListGetState extends State<ProductListGet> {
                       height: MediaQuery.of(context).size.height * 0.75,
                       child: GetBuilder<ProductListControllerGetx>(
                         builder: (context) {
-                                if (controller.isLoading.value) {
+                                if (productControllerGet.isLoading.value) {
                                   return
                                     // !isSearch ?
                                     GridView.builder(
                                     controller: ScrollController(),
-                                    itemCount: controller.welcomeGet.data.length,
+                                    itemCount: productControllerGet.welcomeGet.data.length,
                                     gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2,
@@ -162,7 +166,7 @@ class _ProductListGetState extends State<ProductListGet> {
                                                         decoration: BoxDecoration(
                                                             image: DecorationImage(
                                                               image: NetworkImage(
-                                                                controller.welcomeGet.data[index].imageUrl,
+                                                                productControllerGet.welcomeGet.data[index].imageUrl,
                                                               ),
                                                             )),
                                                       ),
@@ -187,16 +191,10 @@ class _ProductListGetState extends State<ProductListGet> {
                                                             //     ?
                                                             IconButton(
                                                               onPressed: () {
-                                                                // String
-                                                                // productId =
-                                                                //     snapshot
-                                                                //         .data![
-                                                                //     0]
-                                                                //         .data[
-                                                                //     index]
-                                                                //         .id;
-                                                                // favorite.addToFavorite(
-                                                                //     productId);
+                                                                String
+                                                                productId = productControllerGet.welcomeGet.data[index].id;
+                                                                favoriteControllerGetx.addToFavorite(
+                                                                    productId);
                                                               },
                                                               icon: Icon(
                                                                 Icons
@@ -251,7 +249,7 @@ class _ProductListGetState extends State<ProductListGet> {
                                                         alignment:
                                                         Alignment.topLeft,
                                                         child: Text(
-                                                          controller.welcomeGet.data[index].title,
+                                                          productControllerGet.welcomeGet.data[index].title,
                                                           maxLines: 1,
                                                           style: TextStyle(
                                                               fontFamily:
@@ -266,7 +264,7 @@ class _ProductListGetState extends State<ProductListGet> {
                                                         children: [
                                                           Text(
                                                             '₹ ' +
-                                                                controller.welcomeGet.data[index].price,
+                                                                productControllerGet.welcomeGet.data[index].price,
                                                             style: TextStyle(
                                                                 fontFamily:
                                                                 'NotoSans',
@@ -300,15 +298,10 @@ class _ProductListGetState extends State<ProductListGet> {
                                                               IconButton(
                                                                 onPressed:
                                                                     () {
-                                                                  // String id = snapshot
-                                                                  //     .data![
-                                                                  // 0]
-                                                                  //     .data[
-                                                                  // index]
-                                                                  //     .id;
-                                                                  // print(id);
-                                                                  // cart.addToCart(
-                                                                  //     id);
+                                                                  String id = productControllerGet.welcomeGet.data[index].id;
+                                                                  print(id);
+                                                                  cartControllerGetx.addToCart(
+                                                                      id);
                                                                 },
                                                                 icon: Icon(
                                                                   Icons
