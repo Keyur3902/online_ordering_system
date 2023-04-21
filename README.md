@@ -25,7 +25,6 @@ To install the project, follow these steps: Clone the repository to your local m
 
 ```bash
   git clone https://github.com/Keyur3902/online_ordering_system
-  cd my-project
 ```
     
 ## Features
