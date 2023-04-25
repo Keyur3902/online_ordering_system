@@ -12,23 +12,23 @@ class CartDataGet {
     required this.data,
   });
 
-  int status;
-  String msg;
-  double cartTotal;
-  List<CartProductGet> data;
+  int? status;
+  String? msg;
+  double? cartTotal;
+  List<CartProductGet>? data;
 
   factory CartDataGet.fromJson(Map<String, dynamic> json) => CartDataGet(
     status: json["status"] ?? 0,
     msg: json["msg"] ?? '',
     cartTotal: json["cartTotal"]?.toDouble() ?? 0.0,
-    data: List<CartProductGet>.from(json["data"].map((x) => CartProductGet.fromJson(x))),
+    data: List<CartProductGet>.from((json["data"] ?? <CartProductGet>[]).map((x) => CartProductGet.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
     "msg": msg,
     "cartTotal": cartTotal,
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
   };
 }
 
@@ -42,12 +42,12 @@ class CartProductGet {
     required this.productDetailsGet,
   });
 
-  String id;
-  String userId;
-  String cartId;
-  int quantity;
-  double itemTotal;
-  ProductDetailsGet productDetailsGet;
+  String? id;
+  String? userId;
+  String? cartId;
+  int? quantity;
+  double? itemTotal;
+  ProductDetailsGet? productDetailsGet;
 
   factory CartProductGet.fromJson(Map<String, dynamic> json) => CartProductGet(
     id: json["_id"] ?? '',
@@ -64,7 +64,7 @@ class CartProductGet {
     "cartId": cartId,
     "quantity": quantity,
     "itemTotal": itemTotal,
-    "productDetailsGet": productDetailsGet.toJson(),
+    "productDetailsGet": productDetailsGet?.toJson(),
   };
 }
 
@@ -77,11 +77,11 @@ class ProductDetailsGet {
     required this.imageUrl,
   });
 
-  String id;
-  String title;
-  String description;
-  String price;
-  String imageUrl;
+  String? id;
+  String? title;
+  String? description;
+  String? price;
+  String? imageUrl;
 
   factory ProductDetailsGet.fromJson(Map<String, dynamic> json) => ProductDetailsGet(
     id: json["_id"] ?? '',

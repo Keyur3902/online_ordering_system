@@ -141,13 +141,35 @@ class _ProductListState extends State<ProductList> {
                     ),
                     //Product List View
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.75,
+                      height: MediaQuery.of(context).size.height * 0.685,
                       child: FutureBuilder(
                           future: product.getData(context),
                           builder: (context, snapshot) {
                             print(snapshot);
-                            if (snapshot.hasData) {
-                              return !isSearch ? GridView.builder(
+                            if(snapshot.connectionState == ConnectionState.waiting){
+                              return Center(
+                                child: SpinKitSpinningLines(
+                                  color: Color.fromARGB(240, 240, 109, 86),
+                                  size: 50.0,
+                                ),
+                              );
+                            }
+                            else if (snapshot.connectionState == ConnectionState.done) {
+                              return !snapshot.hasData ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image(image: AssetImage('assets/empty-cart.png')),
+                                    Text(
+                                      'Your Cart Is Empty!!',
+                                      style: TextStyle(
+                                          fontFamily: 'NotoSans',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    ),
+                                  ],
+                                ),
+                              ) : !isSearch ? GridView.builder(
                                 controller: ScrollController(),
                                 itemCount: snapshot.data![0].data.length,
                                 gridDelegate:
@@ -190,7 +212,7 @@ class _ProductListState extends State<ProductList> {
                                                   Padding(
                                                     padding:
                                                     const EdgeInsets.only(
-                                                        top: 10),
+                                                        top: 10, right: 10),
                                                     child: Container(
                                                         height: 30,
                                                         decoration:
@@ -204,8 +226,8 @@ class _ProductListState extends State<ProductList> {
                                                             .data[index]
                                                             .watchListItemId ==
                                                             ''
-                                                            ? IconButton(
-                                                          onPressed: () {
+                                                            ? InkWell(
+                                                          onTap: () {
                                                             String
                                                             productId =
                                                                 snapshot
@@ -217,16 +239,21 @@ class _ProductListState extends State<ProductList> {
                                                             favorite.addToFavorite(
                                                                 productId);
                                                           },
-                                                          icon: Icon(
-                                                            Icons
-                                                                .favorite_border_outlined,
-                                                            color: Colors
-                                                                .black,
-                                                            size: 15,
+                                                          onDoubleTap: (){},
+                                                          onLongPress: (){},
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.all(8.0),
+                                                            child: Icon(
+                                                              Icons
+                                                                  .favorite_border_outlined,
+                                                              color: Colors
+                                                                  .black,
+                                                              size: 15,
+                                                            ),
                                                           ),
                                                         )
-                                                            : IconButton(
-                                                          onPressed: () {
+                                                            : InkWell(
+                                                          onTap: () {
                                                             String productId = snapshot
                                                                 .data![0]
                                                                 .data[
@@ -236,16 +263,19 @@ class _ProductListState extends State<ProductList> {
                                                             favorite.removeFromFavorite(
                                                                 productId);
                                                           },
-                                                          icon: Icon(
-                                                            Icons
-                                                                .favorite,
-                                                            color: Color
-                                                                .fromARGB(
-                                                                240,
-                                                                240,
-                                                                109,
-                                                                86),
-                                                            size: 15,
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.all(8.0),
+                                                            child: Icon(
+                                                              Icons
+                                                                  .favorite,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                  240,
+                                                                  240,
+                                                                  109,
+                                                                  86),
+                                                              size: 15,
+                                                            ),
                                                           ),
                                                         )),
                                                   ),
@@ -297,7 +327,7 @@ class _ProductListState extends State<ProductList> {
                                                         padding:
                                                         const EdgeInsets
                                                             .only(
-                                                            bottom: 4.0),
+                                                            bottom: 5.0),
                                                         child: Container(
                                                           height: 30,
                                                           decoration:
@@ -313,8 +343,10 @@ class _ProductListState extends State<ProductList> {
                                                           index]
                                                               .quantity ==
                                                               0
-                                                              ? IconButton(
-                                                            onPressed:
+                                                              ? InkWell(
+                                                            onDoubleTap: (){},
+                                                            onLongPress: (){},
+                                                            onTap:
                                                                 () {
                                                               String id = snapshot
                                                                   .data![
@@ -325,29 +357,40 @@ class _ProductListState extends State<ProductList> {
                                                               print(id);
                                                               cart.addToCart(
                                                                   id);
+                                                              setState(() {
+
+                                                              });
                                                             },
-                                                            icon: Icon(
-                                                              Icons
-                                                                  .shopping_cart_outlined,
-                                                              color: Colors
-                                                                  .black,
-                                                              size: 15,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Icon(
+                                                                Icons
+                                                                    .shopping_cart_outlined,
+                                                                color: Colors
+                                                                    .black,
+                                                                size: 15,
+                                                              ),
                                                             ),
                                                           )
-                                                              : IconButton(
-                                                            onPressed:
+                                                              : InkWell(
+                                                            onDoubleTap: (){},
+                                                            onLongPress: (){},
+                                                            onTap:
                                                                 () {
                                                               ScaffoldMessenger.of(
                                                                   context)
                                                                   .showSnackBar(
                                                                   snackBar);
                                                             },
-                                                            icon: Icon(
-                                                              Icons
-                                                                  .shopping_cart,
-                                                              color: Colors
-                                                                  .black,
-                                                              size: 15,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Icon(
+                                                                Icons
+                                                                    .shopping_cart,
+                                                                color: Colors
+                                                                    .black,
+                                                                size: 15,
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
@@ -581,13 +624,9 @@ class _ProductListState extends State<ProductList> {
                                   );
                                 },
                               );
-                            } else {
-                              return Center(
-                                child: SpinKitSpinningLines(
-                                  color: Color.fromARGB(240, 240, 109, 86),
-                                  size: 50.0,
-                                ),
-                              );
+                            }
+                            else{
+                              return Text('State: ${snapshot.connectionState}');
                             }
                           }),
                     ),

@@ -6,8 +6,6 @@ import 'package:http/http.dart' as http;
 
 class GetProductProvider with ChangeNotifier{
   List<Welcome> data = [];
-  List<Welcome> search = [];
-  String searchText = '';
 
   Future<List<Welcome>> getData(BuildContext context) async {
     try{

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:online_ordering_system/GetxProject/ViewGetx/changePasswordPage_get.dart';
+import 'package:online_ordering_system/GetxProject/ViewGetx/myAccountPage_get.dart';
+import 'ViewGetx/productDetailsPage_get.dart';
 import 'ViewGetx/accountSettingPage_get.dart';
 import 'ViewGetx/bottomNavigation_get.dart';
 import 'ViewGetx/cartPage_get.dart';
@@ -29,6 +32,9 @@ class GetApp extends StatelessWidget {
         GetPage(name: '/OrderHistoryPageGet', page: () => OrderHistoryPageGet()),
         GetPage(name: '/FavoritePageGet', page: () => FavoritePageGet()),
         GetPage(name: '/ProductListGet', page: () => ProductListGet()),
+        GetPage(name: '/ProductDetailsPageGet', page: () => ProductDetailsPageGet()),
+        GetPage(name: '/MyAccountPageGet', page: () => MyAccountPageGet()),
+        GetPage(name: '/ChangePasswordPageGet', page: () => ChangePasswordPageGet()),
       ],
     );
   }

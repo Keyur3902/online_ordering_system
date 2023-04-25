@@ -1,31 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:online_ordering_system/provider/cartProvider.dart';
-import 'package:online_ordering_system/provider/favoriteProvider.dart';
-import 'package:provider/provider.dart';
-import '../Data/data.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:online_ordering_system/GetxProject/ControllerGetx/cartControllerGetx.dart';
+import 'package:online_ordering_system/GetxProject/ControllerGetx/favoriteControllerGetx.dart';
+import 'package:online_ordering_system/GetxProject/ModelClassGetx/productModelClassGet.dart';
+import 'package:get/get.dart';
 
-class ProductDetailsPage extends StatefulWidget {
+class ProductDetailsPageGet extends StatefulWidget {
   @override
-  State<ProductDetailsPage> createState() => _ProductDetailsPageState();
+  State<ProductDetailsPageGet> createState() => _ProductDetailsPageGetState();
 }
 
-class _ProductDetailsPageState extends State<ProductDetailsPage> {
+class _ProductDetailsPageGetState extends State<ProductDetailsPageGet> {
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
 
-  late Data argument;
+  late DataGet argument;
 
   SnackBar snackbar = SnackBar(content: Text('Item already added'));
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<Cart>(context);
-    final favorite = Provider.of<Favorite>(context);
-    argument = ModalRoute.of(context)!.settings.arguments as Data;
+    FavoriteControllerGetx favoriteControllerGetx = Get.put(FavoriteControllerGetx());
+    CartControllerGetx cartControllerGetx = Get.put(CartControllerGetx());
+
+    argument = ModalRoute.of(context)!.settings.arguments as DataGet;
     print(argument);
     return SafeArea(
       child: Scaffold(
@@ -38,29 +40,30 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             color: Colors.grey,
             iconSize: 15,
             onPressed: () {
-              Navigator.pop(context);
+              Get.back();
             },
           ),
           leadingWidth: 75,
           actions: [
             argument.watchListItemId == ''
                 ? IconButton(
-                    padding: EdgeInsets.only(top: 10, right: 33),
-                    icon: Icon(Icons.favorite_border_outlined),
-                    color: Color.fromARGB(240, 240, 109, 86),
-                    iconSize: 20,
-                    onPressed: () {
-                      String productId = argument.id;
-                      favorite.addToFavorite(productId);
-                    },
-                  )
+              padding: EdgeInsets.only(top: 10, right: 33),
+              icon: Icon(Icons.favorite_border_outlined),
+              color: Color.fromARGB(240, 240, 109, 86),
+              iconSize: 20,
+              onPressed: () {
+                String productId = argument.id;
+                // favorite.addToFavorite(productId);
+                favoriteControllerGetx.addToFavorite(productId);
+              },
+            )
                 : IconButton(
-                    padding: EdgeInsets.only(top: 10, right: 33),
-                    icon: Icon(Icons.favorite),
-                    color: Color.fromARGB(240, 240, 109, 86),
-                    iconSize: 20,
-                    onPressed: () {},
-                  ),
+              padding: EdgeInsets.only(top: 10, right: 33),
+              icon: Icon(Icons.favorite),
+              color: Color.fromARGB(240, 240, 109, 86),
+              iconSize: 20,
+              onPressed: () {},
+            ),
           ],
         ),
         body: Column(
@@ -187,7 +190,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         Text(
                           argument.description,
                           style:
-                              TextStyle(fontFamily: 'NotoSans', fontSize: 15),
+                          TextStyle(fontFamily: 'NotoSans', fontSize: 15),
                         ),
                       ],
                     ),
@@ -217,7 +220,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             color: Colors.white,
                             child: GestureDetector(
                               onTap: () {
-                                cart.decreaseQuamtity(argument.cartItemId);
+                                // cart.decreaseQuamtity(argument.cartItemId);
+                                cartControllerGetx.decreaseQuamtity(argument.cartItemId);
                               },
                               child: Icon(Icons.remove),
                             ),
@@ -234,7 +238,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             color: Colors.white,
                             child: GestureDetector(
                               onTap: () {
-                                cart.increaseQuantity(argument.cartItemId);
+                                // cart.increaseQuantity(argument.cartItemId);
+                                cartControllerGetx.increaseQuantity(argument.cartItemId);
                               },
                               child: Icon(Icons.add),
                             ),
@@ -246,54 +251,55 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   SizedBox(width: 10,),
                   argument.quantity == 0
                       ? Expanded(
-                          child: InkWell(
-                            onTap: (){
-                              String productId = argument.id;
-                              cart.addToCart(productId);
-                            },
-                            onLongPress: (){},
-                            onDoubleTap: (){},
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(240, 240, 109, 86),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 18.0, bottom: 18.0),
-                                  child: Text(
-                                  'Add to cart',
-                                  style: TextStyle(
-                                    fontFamily: 'NotoSans',
-                                    color: Colors.white
-                                  ),
+                    child: InkWell(
+                      onTap: (){
+                        String productId = argument.id;
+                        // cart.addToCart(productId);
+                        cartControllerGetx.addToCart(productId);
+                      },
+                      onLongPress: (){},
+                      onDoubleTap: (){},
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(240, 240, 109, 86),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                                ),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 18.0, bottom: 18.0),
+                            child: Text(
+                              'Add to cart',
+                              style: TextStyle(
+                                  fontFamily: 'NotoSans',
+                                  color: Colors.white
                               ),
                             ),
                           ),
+                        ),
+                      ),
+                    ),
                   )
                       : Flexible(
-                          child: Center(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackbar);
-                              },
-                              onLongPress: () {},
-                              child: Text(
-                                'Added to cart',
-                                style: TextStyle(
-                                  fontFamily: 'NotoSans',
-                                ),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.fromLTRB(65, 17, 65, 17),
-                                backgroundColor: Colors.grey,
-                              ),
-                            ),
+                    child: Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snackbar);
+                        },
+                        onLongPress: () {},
+                        child: Text(
+                          'Added to cart',
+                          style: TextStyle(
+                            fontFamily: 'NotoSans',
                           ),
                         ),
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.fromLTRB(65, 17, 65, 17),
+                          backgroundColor: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -36,7 +36,7 @@ To install the project, follow these steps: Clone the repository to your local m
 
 
 ## 🔗 Links
-[![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Keyur3902)
+[![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Keyur3902/online_ordering_system)
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/parmar-keyur-a26a2a214/)
 
 

@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 
 class Cart with ChangeNotifier {
 
+  bool isLoading = false;
+
   void addToCart(String productId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String jwtToken = preferences.getString('jwtToken').toString();
@@ -24,6 +26,7 @@ class Cart with ChangeNotifier {
     var responsebody = jsonDecode(response.body);
     print(responsebody);
     if(response.statusCode == 200){
+      isLoading = false;
       var responsebody = jsonDecode(response.body);
       print(responsebody);
       print('Item Added to cart');

@@ -24,15 +24,15 @@ class CartControllerGetx extends GetxController {
     var responsebody = jsonDecode(response.body);
     print(responsebody);
     if(response.statusCode == 200){
+      update();
       var responsebody = jsonDecode(response.body);
       print(responsebody);
       print('Item Added to cart');
-      update();
     }
     else if(response.statusCode == 400){
+      update();
       var responsebody = jsonDecode(response.body);
       print(responsebody);
-      update();
     }
   }
 
@@ -63,9 +63,9 @@ class CartControllerGetx extends GetxController {
     }
   }
 
-  RxList<CartDataGet> cartProduct = <CartDataGet>[].obs;
-  RxBool isLoadingGetCart = true.obs;
-  CartDataGet cartDataGet = CartDataGet(status: 0, msg: '', cartTotal: 0, data: []);
+  // RxList<CartDataGet> cartProduct = <CartDataGet>[].obs;
+  RxBool isLoadingGetCart = false.obs;
+  CartDataGet cartDataGet = CartDataGet(status: 0, msg: '', cartTotal: 0, data: <CartProductGet>[]);
 
   @override
   void onInit(){
@@ -76,6 +76,7 @@ class CartControllerGetx extends GetxController {
 
   Future<void> getMyCartGet() async {
     try{
+      isLoadingGetCart.value = true;
       SharedPreferences preferences = await SharedPreferences.getInstance();
       String jwtToken = preferences.getString('jwtToken').toString();
       print(jwtToken);
@@ -86,19 +87,22 @@ class CartControllerGetx extends GetxController {
       if(response.statusCode == 200){
         cartDataGet = CartDataGet.fromJson(responsebody);
         print('itemssdfsdfasdasd1 kjhkhkjh.........$responsebody');
-        isLoadingGetCart.value = true;
-        // update();
+        // return cartProduct;
+        update();
       }
       else{
         cartDataGet = CartDataGet.fromJson(responsebody);
-        isLoadingGetCart.value = false;
-        // update();
+        // return cartProduct;
+        update();
       }
     }
     catch(e){
       print('itemssdfsdfasdasd1 kjhkhkjh.........$e');
       // Get.offAllNamed('/LoginPage');
       throw e;
+    }
+    finally{
+      isLoadingGetCart.value = false;
     }
   }
 
@@ -120,10 +124,12 @@ class CartControllerGetx extends GetxController {
       var responsebody = jsonDecode(response.body);
       print('quantity increased');
       print(responsebody);
+      update();
     }
     else if(response.statusCode == 400){
       var responsebody = jsonDecode(response.body);
       print(responsebody);
+      update();
     }
   }
 
@@ -146,10 +152,12 @@ class CartControllerGetx extends GetxController {
       var responsebody = jsonDecode(response.body);
       print(responsebody);
       print('quantity decreased');
+      update();
     }
     else if(response.statusCode == 400){
       var responsebody = jsonDecode(response.body);
       print(responsebody);
+      update();
     }
   }
 
@@ -171,10 +179,12 @@ class CartControllerGetx extends GetxController {
     if(response.statusCode == 200){
       var responsebody = jsonDecode(response.body);
       print(responsebody);
+      update();
     }
     else if(response.statusCode == 400){
       var responsebody = jsonDecode(response.body);
       print(responsebody);
+      update();
     }
   }
 

@@ -53,20 +53,27 @@ class FavoriteControllerGetx extends GetxController{
       var responsebody = jsonDecode(response.body);
       print('Item removed from favorite');
       print(responsebody);
-      update();
+      // update();
     }
     else if(response.statusCode == 400){
       var responsebody = jsonDecode(response.body);
       print(responsebody);
-      update();
+      // update();
     }
   }
 
+  @override
+  void onInit(){
+    super.onInit();
+    getMyFavorite();
+  }
+
   FavoriteDataGet favoriteDataGet = FavoriteDataGet(status: 0, msg: '', data: []);
-  RxBool isLoadingGetFav = true.obs;
-  List<FavoriteDataGet> favoriteProduct = [];
+  RxBool isLoadingGetFav = false.obs;
+  // RxList<FavoriteDataGet> favoriteProduct = <FavoriteDataGet>[].obs;
   Future<void> getMyFavorite() async {
     try {
+      isLoadingGetFav.value = true;
       SharedPreferences preferences = await SharedPreferences.getInstance();
       String jwtToken = preferences.getString('jwtToken').toString();
       print(jwtToken);
@@ -79,21 +86,26 @@ class FavoriteControllerGetx extends GetxController{
       var responsebody = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        print(responsebody);
+        // favoriteDataGet = FavoriteDataGet.fromJson(responsebody);
         favoriteDataGet = FavoriteDataGet.fromJson(responsebody);
-        isLoadingGetFav.value = true;
+        print('asdljfasdlfhalsjd ======${responsebody}');
+        // return favoriteDataGet;
         update();
       }
       else {
         print(responsebody);
+        // favoriteDataGet = FavoriteDataGet.fromJson(responsebody);
         favoriteDataGet = FavoriteDataGet.fromJson(responsebody);
-        isLoadingGetFav.value = false;
+        // return favoriteProduct;
         update();
       }
     }
     catch (e){
       // Get.offAllNamed('/LoginPage');
       throw e;
+    }
+    finally{
+      isLoadingGetFav.value = false;
     }
   }
 

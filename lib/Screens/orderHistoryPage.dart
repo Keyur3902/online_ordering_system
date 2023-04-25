@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:online_ordering_system/provider/cartProvider.dart';

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:online_ordering_system/Data/validation.dart';
 import 'package:http/http.dart' as http;
@@ -23,7 +24,6 @@ class _LogInState extends State<LogIn> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     // void permission() async {
     //   if (await Permission.notification.status != PermissionStatus.granted) {
     //     await Permission.notification.request();

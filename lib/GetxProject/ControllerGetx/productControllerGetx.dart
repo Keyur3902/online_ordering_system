@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProductListControllerGetx extends GetxController{
 
   RxList<WelcomeGet> data = <WelcomeGet>[].obs;
-  RxBool isLoading = true.obs;
+  RxBool isLoading = false.obs;
   
   WelcomeGet welcomeGet = WelcomeGet(status: 0, msg: '', totalProduct: 0, data: []);
 
@@ -19,6 +19,7 @@ class ProductListControllerGetx extends GetxController{
 
   Future<void> getData() async {
     try{
+      isLoading.value = true;
       SharedPreferences preferences = await SharedPreferences.getInstance();
       String jwtToken = preferences.getString('jwtToken') ?? '';
       final api =
@@ -29,13 +30,12 @@ class ProductListControllerGetx extends GetxController{
       if (response.statusCode == 200) {
         print(item);
         welcomeGet = WelcomeGet.fromJson(item);
-        isLoading.value = true;
         update();
 
       }
       else{
         welcomeGet = WelcomeGet.fromJson(item);
-        isLoading.value = false;
+
         update();
         print('sadsdasdasdasd${item}');
       }
@@ -43,6 +43,9 @@ class ProductListControllerGetx extends GetxController{
     catch(e){
       Get.offAllNamed('/LoginPage');
       throw e;
+    }
+    finally{
+      isLoading.value = false;
     }
   }
 }
