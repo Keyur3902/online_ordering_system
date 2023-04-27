@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -15,13 +16,65 @@ class OrderHistoryPageGet extends StatefulWidget {
 }
 
 class _OrderHistoryPageGetState extends State<OrderHistoryPageGet> {
+
+  StreamSubscription? internetConnection;
+  bool isOffline = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    internetConnection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      if(result == ConnectivityResult.none){
+        setState(() {
+          isOffline = true;
+        });
+      }
+      else if(result == ConnectivityResult.mobile){
+        setState(() {
+          isOffline = false;
+        });
+      }
+      else if(result == ConnectivityResult.wifi){
+        setState(() {
+          isOffline = false;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    internetConnection!.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     OrderListControllerGetx orderListControllerGetx =
         Get.put(OrderListControllerGetx());
     CartControllerGetx cartControllerGetx = Get.put(CartControllerGetx());
 
-    return Scaffold(
+    return isOffline ? Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/wireless.png'),
+              SizedBox(height: 10,),
+              Text(
+                'Oops!! No Internet Connection',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'NotoSans'
+                ),
+              ),
+            ],
+          ),
+        ),
+      ) : Scaffold(
       // extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -71,7 +124,23 @@ class _OrderHistoryPageGetState extends State<OrderHistoryPageGet> {
             : Padding(
                 padding:
                     EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 15),
-                child: ListView.builder(
+                child: orderListControllerGetx.orderGet.data.isEmpty
+                    ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image(image: AssetImage('assets/empty-cart.png')),
+                      Text(
+                        'Your haven\'t ordered anything yet!!',
+                        style: TextStyle(
+                            fontFamily: 'NotoSans',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
+                    ],
+                  ),
+                )
+                    :ListView.builder(
                   itemCount: orderListControllerGetx.orderGet.data.length,
                   itemBuilder: (context, index) => Padding(
                     padding: const EdgeInsets.only(bottom: 10),

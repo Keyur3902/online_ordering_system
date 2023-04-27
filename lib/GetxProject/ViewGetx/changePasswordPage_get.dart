@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 
 class ChangePasswordPageGet extends StatefulWidget {
   const ChangePasswordPageGet({Key? key}) : super(key: key);
@@ -33,8 +34,14 @@ class _ChangePasswordPageGetState extends State<ChangePasswordPageGet> {
     if(response.statusCode == 200){
       var responsebody = jsonDecode(response.body);
       print(responsebody);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      Navigator.pushReplacementNamed(context,'/LoginPage');
+      Get.snackbar(
+        'eshop','Password Changed Successfully',snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(
+          bottom: 10,
+          left: 10,
+          right: 15));
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.clear();
+      Get.offNamedUntil('/LoginPageGet', (route) => false);
     }
     else if(response.statusCode == 400){
       var responsebody = jsonDecode(response.body);

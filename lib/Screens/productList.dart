@@ -29,7 +29,6 @@ class _ProductListState extends State<ProductList> {
 
   void accessAPI() async {
     final product1 = Provider.of<GetProductProvider>(context, listen: false);
-    // product1.isLoaded = false;
     await product1.getData(context);
     product1.isLoaded = true;
   }
@@ -357,9 +356,6 @@ class _ProductListState extends State<ProductList> {
                                                               print(id);
                                                               cart.addToCart(
                                                                   id);
-                                                              setState(() {
-
-                                                              });
                                                             },
                                                             child: Padding(
                                                               padding: const EdgeInsets.all(8.0),

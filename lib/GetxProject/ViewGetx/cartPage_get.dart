@@ -1,6 +1,11 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:online_ordering_system/GetxProject/ControllerGetx/firebaseAPIController_get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../ControllerGetx/cartControllerGetx.dart';
 
 class CartPageGet extends StatefulWidget {
@@ -12,12 +17,63 @@ class CartPageGet extends StatefulWidget {
 
 class _CartPageGetState extends State<CartPageGet> {
 
+  StreamSubscription? internetConnection;
+  bool isOffline = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    internetConnection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      if(result == ConnectivityResult.none){
+        setState(() {
+          isOffline = true;
+        });
+      }
+      else if(result == ConnectivityResult.mobile){
+        setState(() {
+          isOffline = false;
+        });
+      }
+      else if(result == ConnectivityResult.wifi){
+        setState(() {
+          isOffline = false;
+        });
+      }
+    });
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    internetConnection!.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     CartControllerGetx cartControllerGetx = Get.put(CartControllerGetx());
+    FirebaseApiCallingGet firebaseApiCallingGet = Get.put(FirebaseApiCallingGet());
     cartControllerGetx.getMyCartGet();
 
-    return Scaffold(
+    return isOffline ? Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/wireless.png'),
+            SizedBox(height: 10,),
+            Text(
+              'Oops!! No Internet Connection',
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'NotoSans'
+              ),
+            ),
+          ],
+        ),
+      ),
+    ) : Scaffold(
       // extendBodyBehindAppBar: true,
       backgroundColor: Color(0xffF6F6F6),
       appBar: AppBar(
@@ -77,7 +133,8 @@ class _CartPageGetState extends State<CartPageGet> {
         //   ),
         //   )],
       ),
-      body: Obx(() => cartControllerGetx.isLoadingGetCart.value ? Center(
+      body: Obx(() =>
+      cartControllerGetx.isLoadingGetCart.value ? Center(
         child: SpinKitSpinningLines(
           color: Color.fromARGB(240, 240, 109, 86),
           size: 50.0,
@@ -333,20 +390,18 @@ class _CartPageGetState extends State<CartPageGet> {
             ),
             ElevatedButton(
               onPressed: () async {
-                // String cartId =
-                // cart.cartProduct[0].data[0].cartId.toString();
-                // String cartTotal =
-                // cart.cartProduct[0].cartTotal.toString();
-                // SharedPreferences pref =
-                // await SharedPreferences.getInstance();
-                // await cart.placeOrder(cartId, cartTotal);
-                // firebase.sendPushNotification('eshop',
-                //     'Hey ${pref.getString('name')}, your order is successfuly placed! View your order details here');
-                // showAlertDialog(context);
-                // Timer(Duration(seconds: 3), () {
-                //   Navigator.pushReplacementNamed(
-                //       context, '/BottomNavigation');
-                // });
+                String cartId =
+                cartControllerGetx.cartDataGet.data![0].cartId.toString();
+                String cartTotal =
+                cartControllerGetx.cartDataGet.cartTotal.toString();
+                SharedPreferences pref =
+                await SharedPreferences.getInstance();
+                Get.snackbar('Order Placed🎉"', 'Your Order Placed Successfully!!', snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(left: 10, right: 10, bottom: 10), duration: Duration(seconds: 5));
+                await cartControllerGetx.placeOrder(cartId, cartTotal);
+                Navigator.pushReplacementNamed(
+                          context, '/BottomNavigationGet');
+                firebaseApiCallingGet.sendPushNotification('Hey ${pref.getString('name')},',
+                    'Your order is successfully placed! View your order details here');
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

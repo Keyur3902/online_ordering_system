@@ -42,7 +42,7 @@ class OrderListControllerGetx extends GetxController{
       }
     }
     catch (e){
-      // Get.offAllNamed('/LoginPage');
+      Get.offAllNamed('/LoginPageGet');
       print(e);
       throw e;
     }

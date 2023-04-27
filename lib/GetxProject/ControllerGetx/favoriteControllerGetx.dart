@@ -101,7 +101,7 @@ class FavoriteControllerGetx extends GetxController{
       }
     }
     catch (e){
-      // Get.offAllNamed('/LoginPage');
+      Get.offAllNamed('/LoginPageGet');
       throw e;
     }
     finally{

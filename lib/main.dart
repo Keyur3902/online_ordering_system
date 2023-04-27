@@ -1,6 +1,8 @@
 import 'dart:developer';
+import 'dart:ui';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:online_ordering_system/GetxProject/mainGet.dart';
@@ -33,9 +35,20 @@ Future<void> backgroundHandler(RemoteMessage message) async {
 /*  print(message.data.toString());
   print(message.notification!.title);*/
 }
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  FlutterError.onError = (errorDetails) {
+    // If you wish to record a "non-fatal" exception, please use `FirebaseCrashlytics.instance.recordFlutterError` instead
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  PlatformDispatcher.instance.onError = (error, stack) {
+    // If you wish to record a "non-fatal" exception, please remove the "fatal" parameter
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
 
   if (DefaultFirebaseOptions.currentPlatform == DefaultFirebaseOptions.ios) {
   } else {
@@ -44,7 +57,7 @@ void main() async {
     LocalNotificationService.initialize();
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('fcmToken', fcmToken!);
-    log(fcmToken!);
+    log(fcmToken);
 
   }
 // runApp(const MyApp());

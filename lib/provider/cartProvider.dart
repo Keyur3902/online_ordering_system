@@ -79,6 +79,10 @@ class Cart with ChangeNotifier {
         cartProduct = [CartData.fromJson(responsebody)];
         return cartProduct;
       }
+      else if(response.statusCode == 500){
+        Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (route) => false);
+        return cartProduct;
+      }
       else{
         return cartProduct;
       }

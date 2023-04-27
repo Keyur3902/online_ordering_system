@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:badges/badges.dart' as Badge;
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -14,75 +16,131 @@ class ProductListGet extends StatefulWidget {
 }
 
 class _ProductListGetState extends State<ProductListGet> {
-
-  bool isSearch = false;
+  //bool isSearch = false;
   List<dynamic> searchedProduct = [];
+
+  StreamSubscription? internetConnection;
+  bool isOffline = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    internetConnection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      if(result == ConnectivityResult.none){
+        setState(() {
+          isOffline = true;
+        });
+      }
+      else if(result == ConnectivityResult.mobile){
+        setState(() {
+          isOffline = false;
+        });
+      }
+      else if(result == ConnectivityResult.wifi){
+        setState(() {
+          isOffline = false;
+        });
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    internetConnection!.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    final ProductListControllerGetx productControllerGet = Get.put(ProductListControllerGetx());
+    final ProductListControllerGetx productControllerGet =
+        Get.put(ProductListControllerGetx());
     final CartControllerGetx cartControllerGetx = Get.put(CartControllerGetx());
-    final FavoriteControllerGetx favoriteControllerGetx = Get.put(FavoriteControllerGetx());
+    final FavoriteControllerGetx favoriteControllerGetx =
+        Get.put(FavoriteControllerGetx());
     productControllerGet.getData();
     TextEditingController search1 = TextEditingController();
 
     return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15),
+        child: isOffline ? Scaffold(
+          body: Center(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                //Upper Body  with Notification Icon
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Hello, User!',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontFamily: 'NotoSans',
-                      ),
-                    ),
-                    //CartCounter
-                    IconButton(
-                      alignment: Alignment.topRight,
-                      onPressed: () {},
-                      icon: Badge.Badge(
-                        badgeStyle: Badge.BadgeStyle(
-                          badgeColor: Color.fromARGB(240, 240, 109, 86),
-                        ),
-                        badgeContent: productControllerGet.isLoading.value ? Text(
-                          productControllerGet.welcomeGet.totalProduct.toString(),
-                          style: TextStyle(color: Colors.white),
-                        ) : Text('0',style: TextStyle(color: Colors.white)),
-                        child: Icon(
-                          Icons.shopping_cart,
-                          size: 30,
-                          color: Color(0xff14245B),
-                        ),
-                      ),
-                    ),
-                  ],
+                Image.asset('assets/wireless.png'),
+                SizedBox(height: 10,),
+                Text(
+                  'Oops!! No Internet Connection',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'NotoSans'
+                  ),
                 ),
-                // SearchBar
-                TextField(
+              ],
+            ),
+          ),
+        ) :Scaffold(
+      body: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15, right: 15),
+          child: Column(
+            children: [
+              //Upper Body  with Notification Icon
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Hello, User!',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontFamily: 'NotoSans',
+                    ),
+                  ),
+                  //CartCounter
+                  IconButton(
+                    alignment: Alignment.topRight,
+                    onPressed: () {},
+                    icon: Badge.Badge(
+                      badgeStyle: Badge.BadgeStyle(
+                        badgeColor: Color.fromARGB(240, 240, 109, 86),
+                      ),
+                      badgeContent: productControllerGet.isLoading.value
+                          ? Text(
+                              productControllerGet.welcomeGet.totalProduct
+                                  .toString(),
+                              style: TextStyle(color: Colors.white),
+                            )
+                          : Text('0', style: TextStyle(color: Colors.white)),
+                      child: Icon(
+                        Icons.shopping_cart,
+                        size: 30,
+                        color: Color(0xff14245B),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // SearchBar
+              GetBuilder<ProductListControllerGetx>(builder: (context){
+                return TextField(
                   controller: search1,
-                  onChanged: (value){
+                  onChanged: (value) {
+                   // search1.text = value;
                     List<dynamic> result = [];
-                    if(value.isEmpty){
+                    if (value.isEmpty) {
                       result = productControllerGet.welcomeGet.data;
-                      setState(() {
-                        isSearch = false;
-                      });
-
-                    }else{
-                      result = productControllerGet.welcomeGet.data.where((element) => element.title.toString().toLowerCase().contains(value.toString().toLowerCase())).toList();
-                      setState(() {
-                        isSearch = true;
-                      });
+                    productControllerGet.isLoadDone1();
+                    } else {
+                      productControllerGet.isLoadDone();
+                      result = productControllerGet.welcomeGet.data
+                          .where((element) => element.title
+                          .toString()
+                          .toLowerCase()
+                          .contains(value.toString().toLowerCase()))
+                          .toList();
                     }
                     searchedProduct = result;
                   },
@@ -100,460 +158,534 @@ class _ProductListGetState extends State<ProductListGet> {
                     ),
                     prefixIcon: Icon(Icons.search_rounded),
                   ),
-                ),
-                //Body
-                Column(
-                  children: [
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Divider(),
-                    //Products Text
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'Products',
-                        style: TextStyle(
-                          fontFamily: 'NotoSans',
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
+                );
+              }),
+              //Body
+              Column(
+                children: [
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Divider(),
+                  //Products Text
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Products',
+                      style: TextStyle(
+                        fontFamily: 'NotoSans',
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    //Product List View
-                    Obx(() => productControllerGet.isLoading.value ? Center(
-                      child: SpinKitSpinningLines(
-                        color: Color.fromARGB(240, 240, 109, 86),
-                        size: 50.0,
-                      ),
-                    ) : Container(
-                      height: MediaQuery.of(context).size.height * 0.69,
-                      child:
-                      !isSearch ?
-                      GridView.builder(
-                        controller: ScrollController(),
-                        itemCount: productControllerGet.welcomeGet.data.length,
-                        gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 13,
-                          crossAxisSpacing: 13,
-                        ),
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              Get.toNamed('/ProductDetailsPageGet' , arguments: productControllerGet.welcomeGet.data[index]);
-                            },
-                            child: Card(
-                              elevation: 0,
-                              color: Color(0xffF0F0F1),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                  BorderRadius.circular(10),
-                                  side: BorderSide(
-                                    color: Color(0xffF0F0F1),
-                                  )),
-                              child: Column(
-                                children: [
-                                  Flexible(
-                                    child: Stack(
-                                        alignment: Alignment.topRight,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                    productControllerGet.welcomeGet.data[index].imageUrl,
-                                                  ),
-                                                )),
-                                          ),
-                                          Padding(
-                                            padding:
-                                            const EdgeInsets.only(
-                                                top: 10),
-                                            child: Container(
-                                              height: 30,
-                                              decoration:
-                                              BoxDecoration(
-                                                shape:
-                                                BoxShape.circle,
-                                                color: Colors.white,
-                                              ),
-                                              child:
-                                              productControllerGet.welcomeGet.data[index].watchListItemId == ''
-                                                  ?
-                                              IconButton(
-                                                onPressed: () {
-                                                  String
-                                                  productId = productControllerGet.welcomeGet.data[index].id;
-                                                  favoriteControllerGetx.addToFavorite(
-                                                      productId);
-                                                  productControllerGet.getData();
-                                                },
-                                                icon: Icon(
-                                                  Icons
-                                                      .favorite_border_outlined,
-                                                  color: Colors
-                                                      .black,
-                                                  size: 15,
-                                                ),
-                                              )
-                                                  : IconButton(
-                                                onPressed: () {
-                                                  String productId = productControllerGet.welcomeGet.data[index].watchListItemId.toString();
-                                                  favoriteControllerGetx.removeFromFavorite(
-                                                      productId);
-                                                  productControllerGet.getData();
-                                                },
-                                                icon: Icon(
-                                                  Icons
-                                                      .favorite,
-                                                  color: Color
-                                                      .fromARGB(
-                                                      240,
-                                                      240,
-                                                      109,
-                                                      86),
-                                                  size: 15,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ]),
-                                  ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft:
-                                          Radius.circular(10),
-                                          bottomRight:
-                                          Radius.circular(10),
-                                        )),
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 10, right: 10),
-                                      child: Column(
-                                        children: [
-                                          Align(
-                                            alignment:
-                                            Alignment.topLeft,
-                                            child: Text(
-                                              productControllerGet.welcomeGet.data[index].title,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                  fontFamily:
-                                                  'NotoSans',
-                                                  color: Colors.black),
-                                            ),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment
-                                                .spaceBetween,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  //Product List View
+                  Obx(
+                    () => productControllerGet.isLoading.value
+                        ? Center(
+                            child: SpinKitSpinningLines(
+                              color: Color.fromARGB(240, 240, 109, 86),
+                              size: 50.0,
+                            ),
+                          )
+                        : SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.69,
+                            child: !productControllerGet.check()
+                                ? GridView.builder(
+                                    controller: ScrollController(),
+                                    itemCount: productControllerGet
+                                        .welcomeGet.data.length,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      mainAxisSpacing: 13,
+                                      crossAxisSpacing: 13,
+                                    ),
+                                    itemBuilder: (context, index) {
+                                      return InkWell(
+                                        onTap: () {
+                                          Get.toNamed('/ProductDetailsPageGet',
+                                              arguments: productControllerGet
+                                                  .welcomeGet.data[index]);
+                                        },
+                                        child: Card(
+                                          elevation: 0,
+                                          color: Color(0xffF0F0F1),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              side: BorderSide(
+                                                color: Color(0xffF0F0F1),
+                                              )),
+                                          child: Column(
                                             children: [
-                                              Text(
-                                                '₹ ' +
-                                                    productControllerGet.welcomeGet.data[index].price,
-                                                style: TextStyle(
-                                                    fontFamily:
-                                                    'NotoSans',
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                    fontSize: 15),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                const EdgeInsets
-                                                    .only(
-                                                    bottom: 4.0),
-                                                child: Container(
-                                                    height: 30,
-                                                    decoration:
-                                                    BoxDecoration(
-                                                      shape:
-                                                      BoxShape.circle,
-                                                      color: Color(
-                                                          0xffF0F0F1),
-                                                    ),
-                                                    child:
-                                                    productControllerGet.welcomeGet
-                                                        .data[
-                                                    index]
-                                                        .quantity ==
-                                                        0
-                                                        ?
-                                                    IconButton(
-                                                      onPressed:
-                                                          () {
-                                                        String id = productControllerGet.welcomeGet.data[index].id;
-                                                        print(id);
-                                                        cartControllerGetx.addToCart(
-                                                            id);
-                                                        productControllerGet.getData();
-                                                      },
-                                                      icon: Icon(
-                                                        Icons
-                                                            .shopping_cart_outlined,
-                                                        color: Colors
-                                                            .black,
-                                                        size: 15,
+                                              Flexible(
+                                                child: Stack(
+                                                    alignment:
+                                                        Alignment.topRight,
+                                                    children: [
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                          image: NetworkImage(
+                                                            productControllerGet
+                                                                .welcomeGet
+                                                                .data[index]
+                                                                .imageUrl,
+                                                          ),
+                                                        )),
                                                       ),
-                                                    )
-                                                      : IconButton(
-                                                    onPressed:
-                                                        () {
-                                                      // ScaffoldMessenger.of(
-                                                      //     context)
-                                                      //     .showSnackBar(
-                                                      //     snackBar);
-                                                    },
-                                                    icon: Icon(
-                                                      Icons
-                                                          .shopping_cart,
-                                                      color: Colors
-                                                          .black,
-                                                      size: 15,
-                                                    ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(top: 10),
+                                                        child: Container(
+                                                          height: 30,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            color: Colors.white,
+                                                          ),
+                                                          child: productControllerGet
+                                                                      .welcomeGet
+                                                                      .data[
+                                                                          index]
+                                                                      .watchListItemId ==
+                                                                  ''
+                                                              ? IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    String
+                                                                        productId =
+                                                                        productControllerGet
+                                                                            .welcomeGet
+                                                                            .data[index]
+                                                                            .id;
+                                                                    favoriteControllerGetx
+                                                                        .addToFavorite(
+                                                                            productId);
+                                                                    productControllerGet
+                                                                        .getData();
+                                                                  },
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .favorite_border_outlined,
+                                                                    color: Colors
+                                                                        .black,
+                                                                    size: 15,
+                                                                  ),
+                                                                )
+                                                              : IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    String productId = productControllerGet
+                                                                        .welcomeGet
+                                                                        .data[
+                                                                            index]
+                                                                        .watchListItemId
+                                                                        .toString();
+                                                                    favoriteControllerGetx
+                                                                        .removeFromFavorite(
+                                                                            productId);
+                                                                    productControllerGet
+                                                                        .getData();
+                                                                  },
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .favorite,
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            240,
+                                                                            240,
+                                                                            109,
+                                                                            86),
+                                                                    size: 15,
+                                                                  ),
+                                                                ),
+                                                        ),
+                                                      ),
+                                                    ]),
+                                              ),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      bottomLeft:
+                                                          Radius.circular(10),
+                                                      bottomRight:
+                                                          Radius.circular(10),
+                                                    )),
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 10, right: 10),
+                                                  child: Column(
+                                                    children: [
+                                                      Align(
+                                                        alignment:
+                                                            Alignment.topLeft,
+                                                        child: Text(
+                                                          productControllerGet
+                                                              .welcomeGet
+                                                              .data[index]
+                                                              .title,
+                                                          maxLines: 1,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'NotoSans',
+                                                              color:
+                                                                  Colors.black),
+                                                        ),
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            '₹ ${productControllerGet
+                                                                    .welcomeGet
+                                                                    .data[index]
+                                                                    .price}',
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    'NotoSans',
+                                                                color: Colors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 15),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    bottom:
+                                                                        4.0),
+                                                            child: Container(
+                                                              height: 30,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color: Color(
+                                                                    0xffF0F0F1),
+                                                              ),
+                                                              child: productControllerGet
+                                                                          .welcomeGet
+                                                                          .data[
+                                                                              index]
+                                                                          .quantity ==
+                                                                      0
+                                                                  ? IconButton(
+                                                                      onPressed:
+                                                                          () async {
+                                                                        String id = productControllerGet
+                                                                            .welcomeGet
+                                                                            .data[index]
+                                                                            .id;
+                                                                        print(
+                                                                            id);
+                                                                        await cartControllerGetx
+                                                                            .addToCart(id);
+                                                                        productControllerGet
+                                                                            .getData();
+                                                                      },
+                                                                      icon:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .shopping_cart_outlined,
+                                                                        color: Colors
+                                                                            .black,
+                                                                        size:
+                                                                            15,
+                                                                      ),
+                                                                    )
+                                                                  : IconButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Get.snackbar(
+                                                                            'eshop',
+                                                                            'Item Already Added',
+                                                                            margin: EdgeInsets.only(
+                                                                                bottom: 10,
+                                                                                left: 10,
+                                                                                right: 15));
+                                                                      },
+                                                                      icon:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .shopping_cart,
+                                                                        color: Colors
+                                                                            .black,
+                                                                        size:
+                                                                            15,
+                                                                      ),
+                                                                    ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ],
                                                   ),
                                                 ),
                                               ),
                                             ],
-                                          )
-                                        ],
-                                      ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : GridView.builder(
+                                    controller: ScrollController(),
+                                    itemCount: searchedProduct.length,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      mainAxisSpacing: 13,
+                                      crossAxisSpacing: 13,
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      )
-                            :
-                      GridView.builder(
-                        controller: ScrollController(),
-                        itemCount: searchedProduct.length,
-                        gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 13,
-                          crossAxisSpacing: 13,
-                        ),
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, '/ProductDetailsPage',
-                                  arguments:
-                                  productControllerGet.welcomeGet.data[index]);
-                            },
-                            child: Card(
-                              elevation: 0,
-                              color: Color(0xffF0F0F1),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                  BorderRadius.circular(10),
-                                  side: BorderSide(
-                                    color: Color(0xffF0F0F1),
-                                  )),
-                              child: Column(
-                                children: [
-                                  Flexible(
-                                    child: Stack(
-                                        alignment: Alignment.topRight,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                    searchedProduct[index].imageUrl,
-                                                  ),
-                                                )),
-                                          ),
-                                          Padding(
-                                            padding:
-                                            const EdgeInsets.only(
-                                                top: 10),
-                                            child: Container(
-                                                height: 30,
-                                                decoration:
-                                                BoxDecoration(
-                                                  shape:
-                                                  BoxShape.circle,
-                                                  color: Colors.white,
-                                                ),
-                                                child: productControllerGet.welcomeGet
-                                                    .data[index]
-                                                    .watchListItemId ==
-                                                    ''
-                                                    ? IconButton(
-                                                  onPressed: () {
-                                                    String
-                                                    productId =
-                                                        productControllerGet.welcomeGet
-                                                            .data[
-                                                        index]
-                                                            .id;
-                                                    favoriteControllerGetx.addToFavorite(
-                                                        productId);
-                                                  },
-                                                  icon: Icon(
-                                                    Icons
-                                                        .favorite_border_outlined,
-                                                    color: Colors
-                                                        .black,
-                                                    size: 15,
-                                                  ),
-                                                )
-                                                    : IconButton(
-                                                  onPressed: () {
-                                                    String productId = productControllerGet.welcomeGet
-                                                        .data[
-                                                    index]
-                                                        .watchListItemId
-                                                        .toString();
-                                                    favoriteControllerGetx.removeFromFavorite(
-                                                        productId);
-                                                  },
-                                                  icon: Icon(
-                                                    Icons
-                                                        .favorite,
-                                                    color: Color
-                                                        .fromARGB(
-                                                        240,
-                                                        240,
-                                                        109,
-                                                        86),
-                                                    size: 15,
-                                                  ),
-                                                )),
-                                          ),
-                                        ]),
-                                  ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft:
-                                          Radius.circular(10),
-                                          bottomRight:
-                                          Radius.circular(10),
-                                        )),
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 10, right: 10),
-                                      child: Column(
-                                        children: [
-                                          Align(
-                                            alignment:
-                                            Alignment.topLeft,
-                                            child: Text(
-                                              searchedProduct[index].title,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                  fontFamily:
-                                                  'NotoSans',
-                                                  color: Colors.black),
-                                            ),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment
-                                                .spaceBetween,
+                                    itemBuilder: (context, index) {
+                                      return InkWell(
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                              context, '/ProductDetailsPage',
+                                              arguments: productControllerGet
+                                                  .welcomeGet.data[index]);
+                                        },
+                                        child: Card(
+                                          elevation: 0,
+                                          color: Color(0xffF0F0F1),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              side: BorderSide(
+                                                color: Color(0xffF0F0F1),
+                                              )),
+                                          child: Column(
                                             children: [
-                                              Text(
-                                                '₹ ' +
-                                                    searchedProduct[index].price,
-                                                style: TextStyle(
-                                                    fontFamily:
-                                                    'NotoSans',
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                    fontSize: 15),
+                                              Flexible(
+                                                child: Stack(
+                                                    alignment:
+                                                        Alignment.topRight,
+                                                    children: [
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                          image: NetworkImage(
+                                                            searchedProduct[
+                                                                    index]
+                                                                .imageUrl,
+                                                          ),
+                                                        )),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(top: 10),
+                                                        child: Container(
+                                                            height: 30,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            child: productControllerGet
+                                                                        .welcomeGet
+                                                                        .data[
+                                                                            index]
+                                                                        .watchListItemId ==
+                                                                    ''
+                                                                ? IconButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      String productId = productControllerGet
+                                                                          .welcomeGet
+                                                                          .data[
+                                                                              index]
+                                                                          .id;
+                                                                      favoriteControllerGetx
+                                                                          .addToFavorite(
+                                                                              productId);
+                                                                    },
+                                                                    icon: Icon(
+                                                                      Icons
+                                                                          .favorite_border_outlined,
+                                                                      color: Colors
+                                                                          .black,
+                                                                      size: 15,
+                                                                    ),
+                                                                  )
+                                                                : IconButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      String productId = productControllerGet
+                                                                          .welcomeGet
+                                                                          .data[
+                                                                              index]
+                                                                          .watchListItemId
+                                                                          .toString();
+                                                                      favoriteControllerGetx
+                                                                          .removeFromFavorite(
+                                                                              productId);
+                                                                    },
+                                                                    icon: Icon(
+                                                                      Icons
+                                                                          .favorite,
+                                                                      color: Color.fromARGB(
+                                                                          240,
+                                                                          240,
+                                                                          109,
+                                                                          86),
+                                                                      size: 15,
+                                                                    ),
+                                                                  )),
+                                                      ),
+                                                    ]),
                                               ),
-                                              Padding(
-                                                padding:
-                                                const EdgeInsets
-                                                    .only(
-                                                    bottom: 4.0),
-                                                child: Container(
-                                                  height: 30,
-                                                  decoration:
-                                                  BoxDecoration(
-                                                    shape:
-                                                    BoxShape.circle,
-                                                    color: Color(
-                                                        0xffF0F0F1),
-                                                  ),
-                                                  child: productControllerGet.welcomeGet
-                                                      .data[
-                                                  index]
-                                                      .quantity ==
-                                                      0
-                                                      ? IconButton(
-                                                    onPressed:
-                                                        () {
-                                                      String id = productControllerGet.welcomeGet
-                                                          .data[
-                                                      index]
-                                                          .id;
-                                                      print(id);
-                                                      cartControllerGetx.addToCart(
-                                                          id);
-                                                    },
-                                                    icon: Icon(
-                                                      Icons
-                                                          .shopping_cart_outlined,
-                                                      color: Colors
-                                                          .black,
-                                                      size: 15,
-                                                    ),
-                                                  )
-                                                      : IconButton(
-                                                    onPressed:
-                                                        () {
-                                                      // ScaffoldMessenger.of(
-                                                      //     context)
-                                                      //     .showSnackBar(
-                                                      //     snackBar);
-                                                    },
-                                                    icon: Icon(
-                                                      Icons
-                                                          .shopping_cart,
-                                                      color: Colors
-                                                          .black,
-                                                      size: 15,
-                                                    ),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      bottomLeft:
+                                                          Radius.circular(10),
+                                                      bottomRight:
+                                                          Radius.circular(10),
+                                                    )),
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 10, right: 10),
+                                                  child: Column(
+                                                    children: [
+                                                      Align(
+                                                        alignment:
+                                                            Alignment.topLeft,
+                                                        child: Text(
+                                                          searchedProduct[index]
+                                                              .title,
+                                                          maxLines: 1,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'NotoSans',
+                                                              color:
+                                                                  Colors.black),
+                                                        ),
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            '₹ ' +
+                                                                searchedProduct[
+                                                                        index]
+                                                                    .price,
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    'NotoSans',
+                                                                color: Colors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 15),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    bottom:
+                                                                        4.0),
+                                                            child: Container(
+                                                              height: 30,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color: Color(
+                                                                    0xffF0F0F1),
+                                                              ),
+                                                              child: productControllerGet
+                                                                          .welcomeGet
+                                                                          .data[
+                                                                              index]
+                                                                          .quantity ==
+                                                                      0
+                                                                  ? IconButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        String id = productControllerGet
+                                                                            .welcomeGet
+                                                                            .data[index]
+                                                                            .id;
+                                                                        print(
+                                                                            id);
+                                                                        cartControllerGetx
+                                                                            .addToCart(id);
+                                                                      },
+                                                                      icon:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .shopping_cart_outlined,
+                                                                        color: Colors
+                                                                            .black,
+                                                                        size:
+                                                                            15,
+                                                                      ),
+                                                                    )
+                                                                  : IconButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        // ScaffoldMessenger.of(
+                                                                        //     context)
+                                                                        //     .showSnackBar(
+                                                                        //     snackBar);
+                                                                      },
+                                                                      icon:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .shopping_cart,
+                                                                        color: Colors
+                                                                            .black,
+                                                                        size:
+                                                                            15,
+                                                                      ),
+                                                                    ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ],
                                                   ),
                                                 ),
                                               ),
                                             ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    )
-                  ],
-                ),
-              ],
-            ),
+                          ),
+                  )
+                ],
+              ),
+            ],
           ),
         ),
-        )
-      );
+      ),
+    ));
   }
 }

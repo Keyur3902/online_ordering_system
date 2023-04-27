@@ -8,7 +8,7 @@ class CartControllerGetx extends GetxController {
 
   RxBool isLoadingAddToCart = true.obs;
 
-  void addToCart(String productId) async {
+  Future<void> addToCart(String productId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String jwtToken = preferences.getString('jwtToken').toString();
     print(jwtToken);
@@ -98,7 +98,7 @@ class CartControllerGetx extends GetxController {
     }
     catch(e){
       print('itemssdfsdfasdasd1 kjhkhkjh.........$e');
-      // Get.offAllNamed('/LoginPage');
+      Get.offAllNamed('/LoginPageGet');
       throw e;
     }
     finally{

@@ -156,7 +156,7 @@ class _AccountSettingPageGetState extends State<AccountSettingPageGet> {
                           onPressed: () async {
                             SharedPreferences preferences = await SharedPreferences.getInstance();
                             preferences.clear();
-                            Get.offNamedUntil('/LoginPage', (route) => false);
+                            Get.offNamedUntil('/LoginPageGet', (route) => false);
                           },
                         ),
                       ),

@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:online_ordering_system/GetxProject/ViewGetx/changePasswordPage_get.dart';
+import 'package:online_ordering_system/GetxProject/ViewGetx/forgotPasswordPage_get.dart';
+import 'package:online_ordering_system/GetxProject/ViewGetx/loginPage_get.dart';
 import 'package:online_ordering_system/GetxProject/ViewGetx/myAccountPage_get.dart';
+import 'package:online_ordering_system/GetxProject/ViewGetx/otpOnForgotPassword_get.dart';
+import 'package:online_ordering_system/GetxProject/ViewGetx/otpOnRegister_get.dart';
+import 'package:online_ordering_system/GetxProject/ViewGetx/registerPage_get.dart';
 import 'ViewGetx/productDetailsPage_get.dart';
 import 'ViewGetx/accountSettingPage_get.dart';
 import 'ViewGetx/bottomNavigation_get.dart';
@@ -35,6 +40,11 @@ class GetApp extends StatelessWidget {
         GetPage(name: '/ProductDetailsPageGet', page: () => ProductDetailsPageGet()),
         GetPage(name: '/MyAccountPageGet', page: () => MyAccountPageGet()),
         GetPage(name: '/ChangePasswordPageGet', page: () => ChangePasswordPageGet()),
+        GetPage(name: '/LoginPageGet', page: () => LoginPageGet()),
+        GetPage(name: '/SignUpPageGet', page: () => SignUpPageGet()),
+        GetPage(name: '/OtpOnRegisterPageGet', page: () => OtpOnRegisterGet()),
+        GetPage(name: '/ForgotPasswordPageGet', page: () => ForgotPasswordPageGet()),
+        GetPage(name: '/OtpOnForgotPasswordPageGet', page: () => OtpOnForgotPasswordPageGet()),
       ],
     );
   }

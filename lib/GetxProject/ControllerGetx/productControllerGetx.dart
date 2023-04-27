@@ -11,11 +11,30 @@ class ProductListControllerGetx extends GetxController{
   
   WelcomeGet welcomeGet = WelcomeGet(status: 0, msg: '', totalProduct: 0, data: []);
 
+  bool isLoad = false;
+
   @override
   void onInit() {
     super.onInit();
+    isLoad = false;
     getData();
   }
+
+  isLoadDone(){
+    isLoad = true;
+    update();
+  }
+
+   isLoadDone1(){
+    isLoad = false;
+    update();
+  }
+
+  bool check(){
+    return isLoad;
+  }
+
+
 
   Future<void> getData() async {
     try{
@@ -31,17 +50,15 @@ class ProductListControllerGetx extends GetxController{
         print(item);
         welcomeGet = WelcomeGet.fromJson(item);
         update();
-
       }
       else{
         welcomeGet = WelcomeGet.fromJson(item);
-
         update();
         print('sadsdasdasdasd${item}');
       }
     }
     catch(e){
-      Get.offAllNamed('/LoginPage');
+      Get.offAllNamed('/LoginPageGet');
       throw e;
     }
     finally{

@@ -6,6 +6,8 @@ import 'package:online_ordering_system/GetxProject/ControllerGetx/favoriteContro
 import 'package:online_ordering_system/GetxProject/ModelClassGetx/productModelClassGet.dart';
 import 'package:get/get.dart';
 
+import '../ControllerGetx/productControllerGetx.dart';
+
 class ProductDetailsPageGet extends StatefulWidget {
   @override
   State<ProductDetailsPageGet> createState() => _ProductDetailsPageGetState();
@@ -254,7 +256,6 @@ class _ProductDetailsPageGetState extends State<ProductDetailsPageGet> {
                     child: InkWell(
                       onTap: (){
                         String productId = argument.id;
-                        // cart.addToCart(productId);
                         cartControllerGetx.addToCart(productId);
                       },
                       onLongPress: (){},

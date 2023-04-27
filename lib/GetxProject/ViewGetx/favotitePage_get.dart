@@ -1,9 +1,11 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:online_ordering_system/GetxProject/ControllerGetx/cartControllerGetx.dart';
 import 'package:online_ordering_system/GetxProject/ControllerGetx/favoriteControllerGetx.dart';
-import 'package:online_ordering_system/provider/cartProvider.dart';
 
 class FavoritePageGet extends StatefulWidget {
   const FavoritePageGet({Key? key}) : super(key: key);
@@ -13,6 +15,40 @@ class FavoritePageGet extends StatefulWidget {
 }
 
 class _FavoritePageGetState extends State<FavoritePageGet> {
+
+  StreamSubscription? internetConnection;
+  bool isOffline = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    internetConnection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      if(result == ConnectivityResult.none){
+        setState(() {
+          isOffline = true;
+        });
+      }
+      else if(result == ConnectivityResult.mobile){
+        setState(() {
+          isOffline = false;
+        });
+      }
+      else if(result == ConnectivityResult.wifi){
+        setState(() {
+          isOffline = false;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    internetConnection!.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     FavoriteControllerGetx favoriteControllerGetx =
@@ -20,7 +56,26 @@ class _FavoritePageGetState extends State<FavoritePageGet> {
     favoriteControllerGetx.getMyFavorite();
     CartControllerGetx cartControllerGetx = Get.put(CartControllerGetx());
 
-    return Scaffold(
+    return
+      isOffline ? Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/wireless.png'),
+              SizedBox(height: 10,),
+              Text(
+                'Oops!! No Internet Connection',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'NotoSans'
+                ),
+              ),
+            ],
+          ),
+        ),
+      ) : Scaffold(
         extendBodyBehindAppBar: true,
         backgroundColor: Color(0xffF6F6F6),
         appBar: AppBar(
@@ -91,7 +146,7 @@ class _FavoritePageGetState extends State<FavoritePageGet> {
               : Padding(
                   padding: const EdgeInsets.only(
                       top: 30, left: 15, right: 15, bottom: 15),
-                  child: favoriteControllerGetx.favoriteDataGet.data.length == 0
+                  child: favoriteControllerGetx.favoriteDataGet.data.isEmpty
                       ? Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -196,12 +251,11 @@ class _FavoritePageGetState extends State<FavoritePageGet> {
                                                 children: [
                                                   Expanded(
                                                     child: Text(
-                                                      '₹ ' +
-                                                          favoriteControllerGetx
+                                                      '₹ ${favoriteControllerGetx
                                                               .favoriteDataGet
                                                               .data[index]
                                                               .productDetails
-                                                              .price,
+                                                              .price}',
                                                       style: TextStyle(
                                                         fontFamily: 'NotoSans',
                                                         fontWeight:
