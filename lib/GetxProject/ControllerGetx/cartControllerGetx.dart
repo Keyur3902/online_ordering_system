@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:online_ordering_system/GetxProject/ModelClassGetx/cartModelClassGet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,7 +28,6 @@ class CartControllerGetx extends GetxController {
       update();
       var responsebody = jsonDecode(response.body);
       print(responsebody);
-      print('Item Added to cart');
     }
     else if(response.statusCode == 400){
       update();

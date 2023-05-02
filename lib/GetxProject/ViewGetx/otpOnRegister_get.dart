@@ -61,12 +61,12 @@ class _OtpOnRegisterGetState extends State<OtpOnRegisterGet> {
     var response = await http.post(Uri.parse(api), body: data);
 
     if (response.statusCode == 200) {
-      Get.snackbar('eshop', 'You have successfully registered!', snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(left: 10, right: 10, bottom: 10));
+      Get.snackbar('eshop'.tr, 'You have successfully registered!'.tr, snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(left: 10, right: 10, bottom: 10));
       var responseBody = jsonDecode(response.body);
       print(responseBody);
       Get.toNamed('/LoginPageGet');
     } else if(response.statusCode == 400){
-      Get.snackbar('eshop', 'Invalid OTP!!', snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(left: 10, right: 10, bottom: 10));
+      Get.snackbar('eshop'.tr, 'Invalid OTP!'.tr, snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(left: 10, right: 10, bottom: 10));
       var responseBody1 = jsonDecode(response.body);
       print(responseBody1);
     }
@@ -111,13 +111,13 @@ class _OtpOnRegisterGetState extends State<OtpOnRegisterGet> {
                             ),
                             children: [
                               TextSpan(
-                                text: 'e',
+                                text: 'e'.tr,
                                 style: TextStyle(
                                   color: Color.fromARGB(240, 240, 109, 86),
                                 ),
                               ),
                               TextSpan(
-                                text: 'shop',
+                                text: 'shop'.tr,
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),
@@ -131,7 +131,7 @@ class _OtpOnRegisterGetState extends State<OtpOnRegisterGet> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      'OTP Authentication',
+                      'OTP Authentication'.tr,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 30,
@@ -141,7 +141,7 @@ class _OtpOnRegisterGetState extends State<OtpOnRegisterGet> {
                   ),
                   SizedBox(height: 15,),
                   Text(
-                    'An othentication code has been send to Example@gmail.com',
+                    'An Authentication code has been send to Example@gmail.com'.tr,
                     style: TextStyle(
                       fontFamily: 'NotoSans',
                       color: Colors.grey,
@@ -169,7 +169,7 @@ class _OtpOnRegisterGetState extends State<OtpOnRegisterGet> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        'Didn\'t receive the code?',
+                        'Didn\'t receive the code?'.tr,
                         style: TextStyle(
                           fontFamily: 'NotoSans',
                           color: Colors.grey,
@@ -182,12 +182,12 @@ class _OtpOnRegisterGetState extends State<OtpOnRegisterGet> {
                           resendOtp(arguments.toString());
                         },
                         child: _isResendAgain ? Text(
-                          "Try again in  $_start",
+                          "${'Try again in'.tr} $_start",
                           style: TextStyle(
                             color: Color.fromARGB(240, 240, 109, 86),
                           ),
                         ) : Text(
-                          'Resend',
+                          'Resend'.tr,
                           style: TextStyle(
                             color: Color.fromARGB(240, 240, 109, 86),
                           ),
@@ -205,7 +205,7 @@ class _OtpOnRegisterGetState extends State<OtpOnRegisterGet> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Continue',style: TextStyle(fontFamily: 'NotoSans',),),
+                        Text('Continue'.tr,style: TextStyle(fontFamily: 'NotoSans',),),
                       ],
                     ),
                     style: ElevatedButton.styleFrom(

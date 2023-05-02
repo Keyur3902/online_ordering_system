@@ -52,9 +52,9 @@ class _FavoritePageGetState extends State<FavoritePageGet> {
   @override
   Widget build(BuildContext context) {
     FavoriteControllerGetx favoriteControllerGetx =
-        Get.put(FavoriteControllerGetx());
+        Get.find();
     favoriteControllerGetx.getMyFavorite();
-    CartControllerGetx cartControllerGetx = Get.put(CartControllerGetx());
+    CartControllerGetx cartControllerGetx = Get.find();
 
     return
       isOffline ? Scaffold(
@@ -65,7 +65,7 @@ class _FavoritePageGetState extends State<FavoritePageGet> {
               Image.asset('assets/wireless.png'),
               SizedBox(height: 10,),
               Text(
-                'Oops!! No Internet Connection',
+                'Oops!! No Internet Connection'.tr,
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -105,7 +105,7 @@ class _FavoritePageGetState extends State<FavoritePageGet> {
           title: Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Text(
-              'Wishlist',
+              'Wishlist'.tr,
               style: TextStyle(
                 color: Colors.black,
                 fontFamily: 'NotoSans',
@@ -156,7 +156,7 @@ class _FavoritePageGetState extends State<FavoritePageGet> {
                                 height: 10,
                               ),
                               Text(
-                                'Your Favorite Is Empty!!',
+                                'Your Favorite Is Empty!!'.tr,
                                 style: TextStyle(
                                     fontFamily: 'NotoSans',
                                     fontWeight: FontWeight.bold,
@@ -236,6 +236,13 @@ class _FavoritePageGetState extends State<FavoritePageGet> {
                                                           .removeFromFavorite(
                                                               favoriteItemId);
                                                       favoriteControllerGetx.getMyFavorite();
+                                                      Get.snackbar(
+                                                          'eshop'.tr,
+                                                          'Item Removed from Favorite'.tr,
+                                                          margin: EdgeInsets.only(
+                                                              bottom: 10,
+                                                              left: 10,
+                                                              right: 15));
                                                     },
                                                     icon: Icon(
                                                       Icons.delete,

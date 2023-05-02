@@ -51,7 +51,7 @@ class _CartPageGetState extends State<CartPageGet> {
 
   @override
   Widget build(BuildContext context) {
-    CartControllerGetx cartControllerGetx = Get.put(CartControllerGetx());
+    CartControllerGetx cartControllerGetx = Get.find();
     FirebaseApiCallingGet firebaseApiCallingGet = Get.put(FirebaseApiCallingGet());
     cartControllerGetx.getMyCartGet();
 
@@ -63,7 +63,7 @@ class _CartPageGetState extends State<CartPageGet> {
             Image.asset('assets/wireless.png'),
             SizedBox(height: 10,),
             Text(
-              'Oops!! No Internet Connection',
+              'Oops!! No Internet Connection'.tr,
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -103,7 +103,7 @@ class _CartPageGetState extends State<CartPageGet> {
         title: Padding(
           padding: const EdgeInsets.only(top: 10),
           child: Text(
-            'My Cart',
+            'My Cart'.tr,
             style: TextStyle(
               color: Colors.black,
               fontFamily: 'NotoSans',
@@ -150,7 +150,7 @@ class _CartPageGetState extends State<CartPageGet> {
             children: [
               Image(image: AssetImage('assets/empty-cart.png')),
               Text(
-                'Your Cart Is Empty!!',
+                'Your Cart Is Empty!!'.tr,
                 style: TextStyle(
                     fontFamily: 'NotoSans',
                     fontWeight: FontWeight.bold,
@@ -328,7 +328,7 @@ class _CartPageGetState extends State<CartPageGet> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Sub-total',
+                  'Sub-total'.tr,
                   style: TextStyle(
                       color: Colors.grey, fontFamily: 'NotoSans'),
                 ),
@@ -349,7 +349,7 @@ class _CartPageGetState extends State<CartPageGet> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'VAT (%)',
+                  'VAT (%)'.tr,
                   style: TextStyle(
                       color: Colors.grey, fontFamily: 'NotoSans'),
                 ),
@@ -368,7 +368,7 @@ class _CartPageGetState extends State<CartPageGet> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Total',
+                  'Total'.tr,
                   style: TextStyle(
                     color: Colors.black,
                     fontFamily: 'NotoSans',
@@ -396,18 +396,18 @@ class _CartPageGetState extends State<CartPageGet> {
                 cartControllerGetx.cartDataGet.cartTotal.toString();
                 SharedPreferences pref =
                 await SharedPreferences.getInstance();
-                Get.snackbar('Order Placed🎉"', 'Your Order Placed Successfully!!', snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(left: 10, right: 10, bottom: 10), duration: Duration(seconds: 5));
+                Get.snackbar('Order Placed🎉'.tr, 'Your Order Placed Successfully!!'.tr, snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(left: 10, right: 10, bottom: 10), duration: Duration(seconds: 5));
                 await cartControllerGetx.placeOrder(cartId, cartTotal);
                 Navigator.pushReplacementNamed(
                           context, '/BottomNavigationGet');
-                firebaseApiCallingGet.sendPushNotification('Hey ${pref.getString('name')},',
-                    'Your order is successfully placed! View your order details here');
+                firebaseApiCallingGet.sendPushNotification('${'Hey'.tr} ${pref.getString('name')},',
+                    'Your order is successfully placed! View your order details here'.tr);
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Checkout',
+                    'Checkout'.tr,
                     style: TextStyle(
                         fontFamily: 'NotoSans', fontSize: 15),
                   )

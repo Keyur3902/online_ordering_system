@@ -8,6 +8,7 @@ import 'package:online_ordering_system/GetxProject/ViewGetx/myAccountPage_get.da
 import 'package:online_ordering_system/GetxProject/ViewGetx/otpOnForgotPassword_get.dart';
 import 'package:online_ordering_system/GetxProject/ViewGetx/otpOnRegister_get.dart';
 import 'package:online_ordering_system/GetxProject/ViewGetx/registerPage_get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'ViewGetx/productDetailsPage_get.dart';
 import 'ViewGetx/accountSettingPage_get.dart';
 import 'ViewGetx/bottomNavigation_get.dart';
@@ -16,13 +17,47 @@ import 'ViewGetx/favotitePage_get.dart';
 import 'ViewGetx/orderHistory_get.dart';
 import 'ViewGetx/productList_get.dart';
 import 'ViewGetx/splashScreen_get.dart';
+import 'package:get/get.dart';
 
-class GetApp extends StatelessWidget {
+import 'localeString.dart';
+
+class GetApp extends StatefulWidget {
   const GetApp({Key? key}) : super(key: key);
 
   @override
+  State<GetApp> createState() => _GetAppState();
+}
+
+class _GetAppState extends State<GetApp> {
+
+  Map<String, String> _locale = {'languageCode' : '', 'countryCode' : ''};
+
+  Future<Map<String, String>> getPref() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    print('dsjfkasldfalhsdfasbdfjhasdhf   ====== ${preferences.getString('language')}');
+    return{
+      'languageCode' : preferences.getString('language') ?? 'en',
+      'countryCode' : preferences.getString('country') ?? 'US'
+    };
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    getPref().then((value) {
+      setState(() {
+        _locale = value;
+        print(_locale);
+      });
+    });
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
+    print(_locale);
+    // Locale locale = Locale(languageCode ?? 'en', countryCode ?? 'US');
     return GetMaterialApp(
+      translations: LocaleString(),
+      locale: Locale(_locale['languageCode']!, _locale['countryCode']),
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(

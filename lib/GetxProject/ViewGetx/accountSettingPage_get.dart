@@ -42,7 +42,7 @@ class _AccountSettingPageGetState extends State<AccountSettingPageGet> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Hello,',
+                            'Hello,'.tr,
                             style: TextStyle(
                                 fontFamily: 'NotoSans',
                                 color: Colors.grey,
@@ -50,7 +50,7 @@ class _AccountSettingPageGetState extends State<AccountSettingPageGet> {
                             ),
                           ),
                           Text(
-                            'Welcome to eshop',
+                            'Welcome to eshop'.tr,
                             style: TextStyle(
                               fontFamily: 'NotoSans',
                               color: Colors.black,
@@ -75,7 +75,7 @@ class _AccountSettingPageGetState extends State<AccountSettingPageGet> {
                       child: ListTile(
                         leading: Icon(Icons.account_circle_rounded,),
                         title: Text(
-                          'My Account',
+                          'My Profile'.tr,
                           style: TextStyle(
                               fontFamily: 'NotoSans'
                           ),
@@ -100,7 +100,7 @@ class _AccountSettingPageGetState extends State<AccountSettingPageGet> {
                         leading: Icon(Icons.history,),
                         tileColor: Colors.white,
                         title: Text(
-                          'Order History',
+                          'Order History'.tr,
                           style: TextStyle(
                               fontFamily: 'NotoSans'
                           ),
@@ -121,7 +121,7 @@ class _AccountSettingPageGetState extends State<AccountSettingPageGet> {
                         leading: Icon(Icons.password,),
                         tileColor: Colors.white,
                         title: Text(
-                          'Change Password',
+                          'Change Password'.tr,
                           style: TextStyle(
                               fontFamily: 'NotoSans'
                           ),
@@ -145,7 +145,7 @@ class _AccountSettingPageGetState extends State<AccountSettingPageGet> {
                         leading: Icon(Icons.logout_outlined,),
                         tileColor: Colors.white,
                         title: Text(
-                          'Log Out',
+                          'Log Out'.tr,
                           style: TextStyle(
                               fontFamily: 'NotoSans'
                           ),

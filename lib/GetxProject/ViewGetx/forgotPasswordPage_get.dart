@@ -26,11 +26,11 @@ class _ForgotPasswordPageGetState extends State<ForgotPasswordPageGet> {
       var responsebody = jsonDecode(response.body);
       print(responsebody);
       userId = responsebody['data']['_id'];
-      Get.snackbar('eshop', 'Please verify otp sent to your email!', snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(left: 10, right: 10, bottom: 10));
+      Get.snackbar('eshop'.tr, 'Please verify otp sent to your email!'.tr, snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(left: 10, right: 10, bottom: 10));
       Get.toNamed('/OtpOnForgotPasswordPageGet', arguments: userId);
     }
     else if(response.statusCode == 400){
-      Get.snackbar('eshop', 'This Email Id is not Registered With us kindly register first!', snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(left: 10, right: 10, bottom: 10));
+      Get.snackbar('eshop'.tr, 'This Email Id is not Registered With us kindly register first!'.tr, snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(left: 10, right: 10, bottom: 10));
       var responsebody = jsonDecode(response.body);
       print(responsebody);
     }
@@ -76,13 +76,13 @@ class _ForgotPasswordPageGetState extends State<ForgotPasswordPageGet> {
                             ),
                             children: [
                               TextSpan(
-                                text: 'e',
+                                text: 'e'.tr,
                                 style: TextStyle(
                                   color: Color.fromARGB(240, 240, 109, 86),
                                 ),
                               ),
                               TextSpan(
-                                text: 'shop',
+                                text: 'shop'.tr,
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),
@@ -96,7 +96,7 @@ class _ForgotPasswordPageGetState extends State<ForgotPasswordPageGet> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      'Recover your Password',
+                      'Recover your Password'.tr,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'NotoSans',
@@ -111,7 +111,7 @@ class _ForgotPasswordPageGetState extends State<ForgotPasswordPageGet> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      'Your password is sent to your registered phone no. or email you enter here.',
+                      'Your password is sent to your registered phone no. or email you enter here.'.tr,
                       style: TextStyle(
                         color: Colors.grey,
                         fontFamily: 'NotoSans',
@@ -124,10 +124,10 @@ class _ForgotPasswordPageGetState extends State<ForgotPasswordPageGet> {
                   TextFormField(
                     validator: (value){
                       if(value!.isEmpty){
-                        return 'please enter some text';
+                        return 'please enter some text'.tr;
                       }
                       else if(!Validation.validateEmail(value)){
-                        return 'please enter valid email';
+                        return 'please enter valid email'.tr;
                       }
                       else{
                         return null;
@@ -143,7 +143,7 @@ class _ForgotPasswordPageGetState extends State<ForgotPasswordPageGet> {
                         borderSide: BorderSide.none,
                       ),
 
-                      hintText: 'E - Mail',
+                      hintText: 'E - Mail'.tr,
                       hintStyle: TextStyle(
                         fontFamily: 'NotoSans',
                       ),
@@ -162,7 +162,7 @@ class _ForgotPasswordPageGetState extends State<ForgotPasswordPageGet> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Recover',
+                          'Recover'.tr,
                           style: TextStyle(
                             fontFamily: 'NotoSans',
                           ),

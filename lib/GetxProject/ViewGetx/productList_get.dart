@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:badges/badges.dart' as Badge;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:online_ordering_system/GetxProject/ControllerGetx/cartControllerGetx.dart';
 import 'package:online_ordering_system/GetxProject/ControllerGetx/favoriteControllerGetx.dart';
 import 'package:online_ordering_system/GetxProject/ControllerGetx/productControllerGetx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductListGet extends StatefulWidget {
   const ProductListGet({Key? key}) : super(key: key);
@@ -22,9 +24,15 @@ class _ProductListGetState extends State<ProductListGet> {
   StreamSubscription? internetConnection;
   bool isOffline = false;
 
+  late SharedPreferences preferences;
+
+  void initPref() async {
+    preferences = await SharedPreferences.getInstance();
+  }
   @override
   void initState() {
     // TODO: implement initState
+    initPref();
     internetConnection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       if(result == ConnectivityResult.none){
         setState(() {
@@ -52,8 +60,15 @@ class _ProductListGetState extends State<ProductListGet> {
     super.dispose();
   }
 
+  Future<void> _onSelectedLanguage(String languageCode, String countryCode) async {
+    await preferences.setString('language', languageCode);
+    await preferences.setString('country', countryCode);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+
     final ProductListControllerGetx productControllerGet =
         Get.put(ProductListControllerGetx());
     final CartControllerGetx cartControllerGetx = Get.put(CartControllerGetx());
@@ -71,7 +86,7 @@ class _ProductListGetState extends State<ProductListGet> {
                 Image.asset('assets/wireless.png'),
                 SizedBox(height: 10,),
                 Text(
-                  'Oops!! No Internet Connection',
+                  'Oops!! No Internet Connection'.tr,
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -93,7 +108,8 @@ class _ProductListGetState extends State<ProductListGet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Hello, User!',
+                    // 'Hello, User!',
+                    'hello'.tr,
                     style: TextStyle(
                       color: Colors.grey,
                       fontFamily: 'NotoSans',
@@ -102,7 +118,8 @@ class _ProductListGetState extends State<ProductListGet> {
                   //CartCounter
                   IconButton(
                     alignment: Alignment.topRight,
-                    onPressed: () {},
+                    onPressed: () {
+                    },
                     icon: Badge.Badge(
                       badgeStyle: Badge.BadgeStyle(
                         badgeColor: Color.fromARGB(240, 240, 109, 86),
@@ -124,42 +141,72 @@ class _ProductListGetState extends State<ProductListGet> {
                 ],
               ),
               // SearchBar
-              GetBuilder<ProductListControllerGetx>(builder: (context){
-                return TextField(
-                  controller: search1,
-                  onChanged: (value) {
-                   // search1.text = value;
-                    List<dynamic> result = [];
-                    if (value.isEmpty) {
-                      result = productControllerGet.welcomeGet.data;
-                    productControllerGet.isLoadDone1();
-                    } else {
-                      productControllerGet.isLoadDone();
-                      result = productControllerGet.welcomeGet.data
-                          .where((element) => element.title
-                          .toString()
-                          .toLowerCase()
-                          .contains(value.toString().toLowerCase()))
-                          .toList();
-                    }
-                    searchedProduct = result;
-                  },
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(vertical: 12),
-                    filled: true,
-                    fillColor: Color(0xffF0F0F1),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
+              // GetBuilder<ProductListControllerGetx>(init: ProductListControllerGetx(), builder: (context){
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () => {
+                        buildDialog(context),
+                      },
+                      child: Container(
+                        height: Get.height / 22,
+                        width: Get.width / 12,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Color(0xff14245B)),
+                        child: const Icon(
+                          Icons.translate_sharp,
+                          color: Color.fromARGB(240, 240, 109, 86),
+                          size: 25,
+                        ),
+                      ),
                     ),
-                    hintText: 'Search Products',
-                    hintStyle: TextStyle(
-                      fontFamily: 'NotoSans',
+                    SizedBox(
+                      width: 6,
                     ),
-                    prefixIcon: Icon(Icons.search_rounded),
-                  ),
-                );
-              }),
+                    GetBuilder<ProductListControllerGetx>(
+                      init: ProductListControllerGetx(),
+                      builder: (context) {
+                        return Expanded(
+                          child: TextField(
+                            controller: search1,
+                            onChanged: (value) {
+                             // search1.text = value;
+                              List<dynamic> result = [];
+                              if (value.isEmpty) {
+                                result = productControllerGet.welcomeGet.data;
+                              productControllerGet.isLoadDone1();
+                              } else {
+                                productControllerGet.isLoadDone();
+                                result = productControllerGet.welcomeGet.data
+                                    .where((element) => element.title
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(value.toString().toLowerCase()))
+                                    .toList();
+                              }
+                              searchedProduct = result;
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(vertical: 12),
+                              filled: true,
+                              fillColor: Color(0xffF0F0F1),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
+                              ),
+                              hintText: 'Search Products'.tr,
+                              hintStyle: TextStyle(
+                                fontFamily: 'NotoSans',
+                              ),
+                              prefixIcon: Icon(Icons.search_rounded),
+                            ),
+                          ),
+                        );
+                      }
+                    ),
+                  ],
+                ),
               //Body
               Column(
                 children: [
@@ -171,7 +218,7 @@ class _ProductListGetState extends State<ProductListGet> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      'Products',
+                      'Products'.tr,
                       style: TextStyle(
                         fontFamily: 'NotoSans',
                         fontSize: 15,
@@ -393,6 +440,13 @@ class _ProductListGetState extends State<ProductListGet> {
                                                                             .id;
                                                                         print(
                                                                             id);
+                                                                        Get.snackbar(
+                                                                            'eshop'.tr,
+                                                                            'Item will be Added to Cart. Please Wait!!!'.tr,
+                                                                            margin: EdgeInsets.only(
+                                                                                bottom: 10,
+                                                                                left: 10,
+                                                                                right: 15));
                                                                         await cartControllerGetx
                                                                             .addToCart(id);
                                                                         productControllerGet
@@ -407,28 +461,56 @@ class _ProductListGetState extends State<ProductListGet> {
                                                                         size:
                                                                             15,
                                                                       ),
-                                                                    )
-                                                                  : IconButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        Get.snackbar(
-                                                                            'eshop',
-                                                                            'Item Already Added',
-                                                                            margin: EdgeInsets.only(
-                                                                                bottom: 10,
-                                                                                left: 10,
-                                                                                right: 15));
-                                                                      },
-                                                                      icon:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .shopping_cart,
-                                                                        color: Colors
-                                                                            .black,
-                                                                        size:
-                                                                            15,
+                                                                    ) :
+                                                              Container(
+                                                                decoration: BoxDecoration(
+                                                                    color: Color(0xffF0F0F1),
+                                                                    borderRadius: BorderRadius.circular(10)),
+                                                                padding: EdgeInsets.all(2),
+                                                                child: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  children: [
+                                                                    ClipRRect(
+                                                                      borderRadius: BorderRadius.circular(10),
+                                                                      child: Container(
+                                                                        height: 30,
+                                                                        width: 30,
+                                                                        color: Colors.white,
+                                                                        child: GestureDetector(
+                                                                          onTap: () {
+                                                                            // cart.decreaseQuamtity(argument.cartItemId);
+                                                                            cartControllerGetx.decreaseQuamtity(productControllerGet.welcomeGet.data[index].cartItemId);
+                                                                            productControllerGet.getData();
+                                                                          },
+                                                                          child: Icon(Icons.remove, size: 10,),
+                                                                        ),
                                                                       ),
                                                                     ),
+                                                                    Padding(
+                                                                      padding: const EdgeInsets.only(left: 3, right: 3),
+                                                                      child: Text(
+                                                                        productControllerGet.welcomeGet.data[index].quantity.toString(),
+                                                                      ),
+                                                                    ),
+                                                                    ClipRRect(
+                                                                      borderRadius: BorderRadius.circular(10),
+                                                                      child: Container(
+                                                                        height: 30,
+                                                                        width: 30,
+                                                                        color: Colors.white,
+                                                                        child: GestureDetector(
+                                                                          onTap: () {
+                                                                            // cart.increaseQuantity(argument.cartItemId);
+                                                                            cartControllerGetx.increaseQuantity(productControllerGet.welcomeGet.data[index].cartItemId);
+                                                                            productControllerGet.getData();
+                                                                          },
+                                                                          child: Icon(Icons.add, size: 10,),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
                                                             ),
                                                           ),
                                                         ],
@@ -687,5 +769,54 @@ class _ProductListGetState extends State<ProductListGet> {
         ),
       ),
     ));
+  }
+
+  final List locale = [
+    {'name' : 'English', 'locale': Locale('en','US')},
+    {'name' : 'Hindi', 'locale': Locale('hi','IN')},
+  ];
+
+  updateLanguage(Locale locale){
+    Get.back();
+    Get.updateLocale(locale);
+    // _onSelectedLanguage(languageCode)
+  }
+
+  buildDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: const Text('Choose language'),
+            content: SizedBox(
+              width: double.maxFinite,
+              child: ListView.separated(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        updateLanguage(locale[index]['locale']);
+                        String localeValue = locale[index]['locale'].toString();
+                        List<String> localeParts = localeValue.split('_');
+                        String languageCode = localeParts[0];
+                        print(languageCode);
+                        String countryCode = localeParts[1];
+                        _onSelectedLanguage(languageCode, countryCode);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          locale[index]['name'],
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return const Divider();
+                  },
+                  itemCount: locale.length),
+            ),
+          );
+        });
   }
 }

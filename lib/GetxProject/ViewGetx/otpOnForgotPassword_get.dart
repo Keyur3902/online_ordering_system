@@ -63,11 +63,11 @@ class _OtpOnForgotPasswordPageGetState extends State<OtpOnForgotPasswordPageGet>
     if (response.statusCode == 200) {
       var responseBody = jsonDecode(response.body);
       print(responseBody);
-      Get.snackbar('eshop', 'OTP Verified Successfully And password sent to your Mail!', snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(left: 10, right: 10, bottom: 10));
+      Get.snackbar('eshop'.tr, 'OTP Verified Successfully And password sent to your Mail!'.tr, snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(left: 10, right: 10, bottom: 10));
       Get.toNamed('/LoginPageGet');
 
     } else if(response.statusCode == 400){
-      Get.snackbar('eshop', 'Invalid OTP!', snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(left: 10, right: 10, bottom: 10));
+      Get.snackbar('eshop'.tr, 'Invalid OTP!'.tr, snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(left: 10, right: 10, bottom: 10));
       var responseBody1 = jsonDecode(response.body);
       print(responseBody1);
     }
@@ -112,13 +112,13 @@ class _OtpOnForgotPasswordPageGetState extends State<OtpOnForgotPasswordPageGet>
                             ),
                             children: [
                               TextSpan(
-                                text: 'e',
+                                text: 'e'.tr,
                                 style: TextStyle(
                                   color: Color.fromARGB(240, 240, 109, 86),
                                 ),
                               ),
                               TextSpan(
-                                text: 'shop',
+                                text: 'shop'.tr,
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),
@@ -132,7 +132,7 @@ class _OtpOnForgotPasswordPageGetState extends State<OtpOnForgotPasswordPageGet>
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      'OTP Authentication',
+                      'OTP Authentication'.tr,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 30,
@@ -142,7 +142,7 @@ class _OtpOnForgotPasswordPageGetState extends State<OtpOnForgotPasswordPageGet>
                   ),
                   SizedBox(height: 15,),
                   Text(
-                    'An othentication code has been send to Example@gmail.com',
+                    'An Authentication code has been send to Example@gmail.com'.tr,
                     style: TextStyle(
                       fontFamily: 'NotoSans',
                       color: Colors.grey,
@@ -170,7 +170,7 @@ class _OtpOnForgotPasswordPageGetState extends State<OtpOnForgotPasswordPageGet>
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        'Didn\'t receive the code?',
+                        'Didn\'t receive the code?'.tr,
                         style: TextStyle(
                           fontFamily: 'NotoSans',
                           color: Colors.grey,
@@ -183,12 +183,12 @@ class _OtpOnForgotPasswordPageGetState extends State<OtpOnForgotPasswordPageGet>
                           resendOtp(arguments.toString());
                         },
                         child: _isResendAgain ? Text(
-                          "Try again in  $_start",
+                          "${'Try again in'.tr} $_start",
                           style: TextStyle(
                             color: Color.fromARGB(240, 240, 109, 86),
                           ),
                         ) : Text(
-                          'Resend',
+                          'Resend'.tr,
                           style: TextStyle(
                             color: Color.fromARGB(240, 240, 109, 86),
                           ),
@@ -206,7 +206,7 @@ class _OtpOnForgotPasswordPageGetState extends State<OtpOnForgotPasswordPageGet>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Continue',style: TextStyle(fontFamily: 'NotoSans',),),
+                        Text('Continue'.tr,style: TextStyle(fontFamily: 'NotoSans',),),
                       ],
                     ),
                     style: ElevatedButton.styleFrom(

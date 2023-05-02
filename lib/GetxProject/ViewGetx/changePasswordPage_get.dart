@@ -16,7 +16,6 @@ class _ChangePasswordPageGetState extends State<ChangePasswordPageGet> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController pass = TextEditingController();
   TextEditingController rePass = TextEditingController();
-  SnackBar snackBar = SnackBar(content: Text('Your Password Changed Successfully!'));
 
   void changePassword(String newPass, String confirmPass) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -35,7 +34,7 @@ class _ChangePasswordPageGetState extends State<ChangePasswordPageGet> {
       var responsebody = jsonDecode(response.body);
       print(responsebody);
       Get.snackbar(
-        'eshop','Password Changed Successfully',snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(
+        'eshop'.tr,' Your Password Changed Successfully'.tr,snackPosition: SnackPosition.BOTTOM, margin: EdgeInsets.only(
           bottom: 10,
           left: 10,
           right: 15));
@@ -87,13 +86,13 @@ class _ChangePasswordPageGetState extends State<ChangePasswordPageGet> {
                             ),
                             children: [
                               TextSpan(
-                                text: 'e',
+                                text: 'e'.tr,
                                 style: TextStyle(
                                   color: Color.fromARGB(240, 240, 109, 86),
                                 ),
                               ),
                               TextSpan(
-                                text: 'shop',
+                                text: 'shop'.tr,
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),
@@ -107,7 +106,7 @@ class _ChangePasswordPageGetState extends State<ChangePasswordPageGet> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      'Change your Password',
+                      'Change your Password'.tr,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'NotoSans',
@@ -122,7 +121,7 @@ class _ChangePasswordPageGetState extends State<ChangePasswordPageGet> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      'Your new password must be different form your previous password.',
+                      'Your new password must be different form your previous password.'.tr,
                       style: TextStyle(
                         color: Colors.grey,
                         fontFamily: 'NotoSans',
@@ -135,7 +134,7 @@ class _ChangePasswordPageGetState extends State<ChangePasswordPageGet> {
                   TextFormField(
                     validator: (value){
                       if(value!.isEmpty){
-                        return 'please enter some text';
+                        return 'please enter some text'.tr;
                       }
                       else{
                         return null;
@@ -151,7 +150,7 @@ class _ChangePasswordPageGetState extends State<ChangePasswordPageGet> {
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide.none,
                       ),
-                      hintText: 'New password',
+                      hintText: 'New password'.tr,
                       hintStyle: TextStyle(
                         fontFamily: 'NotoSans',
                       ),
@@ -163,10 +162,10 @@ class _ChangePasswordPageGetState extends State<ChangePasswordPageGet> {
                   TextFormField(
                     validator: (value){
                       if(value!.isEmpty){
-                        return 'please enter some text';
+                        return 'please enter some text'.tr;
                       }
                       else if(value != pass.text){
-                        return "password doesn't match";
+                        return 'password doesn\'t match'.tr;
                       }
                       else{
                         return null;
@@ -182,7 +181,7 @@ class _ChangePasswordPageGetState extends State<ChangePasswordPageGet> {
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide.none,
                       ),
-                      hintText: 'Re-enter new password',
+                      hintText: 'Re-enter new password'.tr,
                       hintStyle: TextStyle(
                         fontFamily: 'NotoSans',
                       ),
@@ -201,7 +200,7 @@ class _ChangePasswordPageGetState extends State<ChangePasswordPageGet> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Change',
+                          'Change'.tr,
                           style: TextStyle(
                             fontFamily: 'NotoSans',
                           ),

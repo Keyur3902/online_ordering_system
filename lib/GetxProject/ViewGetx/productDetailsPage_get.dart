@@ -22,7 +22,7 @@ class _ProductDetailsPageGetState extends State<ProductDetailsPageGet> {
 
   late DataGet argument;
 
-  SnackBar snackbar = SnackBar(content: Text('Item already added'));
+  SnackBar snackbar = SnackBar(content: Text('Item Already Added'.tr));
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +120,7 @@ class _ProductDetailsPageGetState extends State<ProductDetailsPageGet> {
                               width: 10,
                             ),
                             Text(
-                              'reviews',
+                              'reviews'.tr,
                               style: TextStyle(
                                 fontFamily: 'NotoSans',
                                 fontSize: 18,
@@ -160,7 +160,7 @@ class _ProductDetailsPageGetState extends State<ProductDetailsPageGet> {
                               width: 10,
                             ),
                             Text(
-                              'VAT included',
+                              'VAT included'.tr,
                               style: TextStyle(
                                 fontFamily: 'NotoSans',
                                 fontSize: 20,
@@ -179,7 +179,7 @@ class _ProductDetailsPageGetState extends State<ProductDetailsPageGet> {
                         Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            'Details:',
+                            'Details:'.tr,
                             style: TextStyle(
                                 fontFamily: 'NotoSans',
                                 fontSize: 20,
@@ -269,7 +269,7 @@ class _ProductDetailsPageGetState extends State<ProductDetailsPageGet> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 18.0, bottom: 18.0),
                             child: Text(
-                              'Add to cart',
+                              'Add to cart'.tr,
                               style: TextStyle(
                                   fontFamily: 'NotoSans',
                                   color: Colors.white
@@ -284,12 +284,18 @@ class _ProductDetailsPageGetState extends State<ProductDetailsPageGet> {
                     child: Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(snackbar);
+                          Get.snackbar(
+                              'eshop'.tr,
+                              'Item Already Added'.tr,
+                              snackPosition: SnackPosition.BOTTOM,
+                              margin: EdgeInsets.only(
+                                  bottom: 10,
+                                  left: 10,
+                                  right: 15));
                         },
                         onLongPress: () {},
                         child: Text(
-                          'Added to cart',
+                          'Added to cart'.tr,
                           style: TextStyle(
                             fontFamily: 'NotoSans',
                           ),

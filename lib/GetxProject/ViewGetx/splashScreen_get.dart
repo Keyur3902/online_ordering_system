@@ -49,7 +49,7 @@ class _SplashScreenGetState extends State<SplashScreenGet> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'e',
+                        'e'.tr,
                         style: TextStyle(
                           fontSize: 35,
                           fontFamily: 'NotoSans',
@@ -58,7 +58,7 @@ class _SplashScreenGetState extends State<SplashScreenGet> {
                         ),
                       ),
                       Text(
-                        'shop',
+                        'shop'.tr,
                         style: TextStyle(
                           fontSize: 35,
                           fontFamily: 'NotoSans',

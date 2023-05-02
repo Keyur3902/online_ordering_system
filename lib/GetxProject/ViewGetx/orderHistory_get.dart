@@ -54,7 +54,7 @@ class _OrderHistoryPageGetState extends State<OrderHistoryPageGet> {
   Widget build(BuildContext context) {
     OrderListControllerGetx orderListControllerGetx =
         Get.put(OrderListControllerGetx());
-    CartControllerGetx cartControllerGetx = Get.put(CartControllerGetx());
+    CartControllerGetx cartControllerGetx = Get.find();
 
     return isOffline ? Scaffold(
         body: Center(
@@ -64,7 +64,7 @@ class _OrderHistoryPageGetState extends State<OrderHistoryPageGet> {
               Image.asset('assets/wireless.png'),
               SizedBox(height: 10,),
               Text(
-                'Oops!! No Internet Connection',
+                'Oops!! No Internet Connection'.tr,
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -104,7 +104,7 @@ class _OrderHistoryPageGetState extends State<OrderHistoryPageGet> {
         title: Padding(
           padding: const EdgeInsets.only(top: 10),
           child: Text(
-            'My Orders',
+            'My Orders'.tr,
             style: TextStyle(
               color: Colors.black,
               fontFamily: 'NotoSans',
@@ -131,7 +131,7 @@ class _OrderHistoryPageGetState extends State<OrderHistoryPageGet> {
                     children: [
                       Image(image: AssetImage('assets/empty-cart.png')),
                       Text(
-                        'Your haven\'t ordered anything yet!!',
+                        'Your haven\'t ordered anything yet!!'.tr,
                         style: TextStyle(
                             fontFamily: 'NotoSans',
                             fontWeight: FontWeight.bold,
@@ -178,7 +178,7 @@ class _OrderHistoryPageGetState extends State<OrderHistoryPageGet> {
                                   children: [
                                     Flexible(
                                       child: Text(
-                                        '#id: ' +
+                                        '#id: '.tr +
                                             orderListControllerGetx
                                                 .orderGet.data[index].orderId,
                                         style: TextStyle(
@@ -205,7 +205,7 @@ class _OrderHistoryPageGetState extends State<OrderHistoryPageGet> {
                                   height: 10,
                                 ),
                                 Text(
-                                  'Ordered on : ' +
+                                  'Ordered on : '.tr +
                                       orderListControllerGetx
                                           .orderGet.data[index].updatedAt
                                           .toString(),
@@ -246,7 +246,7 @@ class _OrderHistoryPageGetState extends State<OrderHistoryPageGet> {
                                       ),
                                     ),
                                     Text(
-                                      'Items: ' +
+                                      'Items: '.tr +
                                           orderListControllerGetx
                                               .orderGet.data[index].quantity
                                               .toString(),

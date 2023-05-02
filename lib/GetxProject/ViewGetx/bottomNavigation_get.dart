@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:online_ordering_system/GetxProject/ViewGetx/accountSettingPage_get.dart';
 import 'package:online_ordering_system/GetxProject/ViewGetx/cartPage_get.dart';
@@ -135,23 +136,23 @@ class _BottomNavigationGetState extends State<BottomNavigationGet> {
             tabs: [
               GButton(
                 icon: Icons.home,
-                text: 'Home',
+                text: 'Home'.tr,
               ),
               GButton(
                 icon: Icons.history,
-                text: 'History',
+                text: 'History'.tr,
               ),
               GButton(
                 icon: Icons.shopping_cart,
-                text: 'Cart',
+                text: 'Cart'.tr,
               ),
               GButton(
                 icon: Icons.favorite_border,
-                text: 'Favorite',
+                text: 'Favorite'.tr,
               ),
               GButton(
                 icon: Icons.account_circle_rounded,
-                text: 'Accounts',
+                text: 'Accounts'.tr,
               )
             ],
           ),

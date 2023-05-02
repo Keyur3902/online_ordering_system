@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MyAccountPageGet extends StatefulWidget {
   const MyAccountPageGet({Key? key}) : super(key: key);
@@ -40,7 +41,7 @@ class _MyAccountPageGetState extends State<MyAccountPageGet> {
         title: Padding(
           padding: const EdgeInsets.only(top: 10),
           child: Text(
-            'Profile',
+            'Profile'.tr,
             style: TextStyle(
               color: Colors.black,
               fontFamily: 'NotoSans',
@@ -122,7 +123,7 @@ class _MyAccountPageGetState extends State<MyAccountPageGet> {
               ),
             ),
             Text(
-              'Member',
+              'Member'.tr,
               style: TextStyle(
                 fontSize: 20,
                 fontFamily: 'NotoSans',
