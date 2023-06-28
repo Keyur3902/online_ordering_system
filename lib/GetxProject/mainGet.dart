@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:online_ordering_system/GetxProject/ViewGetx/changePasswordPage_get.dart';
 import 'package:online_ordering_system/GetxProject/ViewGetx/forgotPasswordPage_get.dart';
 import 'package:online_ordering_system/GetxProject/ViewGetx/loginPage_get.dart';
@@ -34,7 +32,6 @@ class _GetAppState extends State<GetApp> {
 
   Future<Map<String, String>> getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    print('dsjfkasldfalhsdfasbdfjhasdhf   ====== ${preferences.getString('language')}');
     return{
       'languageCode' : preferences.getString('language') ?? 'en',
       'countryCode' : preferences.getString('country') ?? 'US'
@@ -46,15 +43,12 @@ class _GetAppState extends State<GetApp> {
     getPref().then((value) {
       setState(() {
         _locale = value;
-        print(_locale);
       });
     });
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    print(_locale);
-    // Locale locale = Locale(languageCode ?? 'en', countryCode ?? 'US');
     return GetMaterialApp(
       translations: LocaleString(),
       locale: Locale(_locale['languageCode']!, _locale['countryCode']),

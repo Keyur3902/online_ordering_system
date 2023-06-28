@@ -478,7 +478,6 @@ class _ProductListGetState extends State<ProductListGet> {
                                                                         color: Colors.white,
                                                                         child: GestureDetector(
                                                                           onTap: () {
-                                                                            // cart.decreaseQuamtity(argument.cartItemId);
                                                                             cartControllerGetx.decreaseQuamtity(productControllerGet.welcomeGet.data[index].cartItemId);
                                                                             productControllerGet.getData();
                                                                           },
@@ -773,13 +772,13 @@ class _ProductListGetState extends State<ProductListGet> {
 
   final List locale = [
     {'name' : 'English', 'locale': Locale('en','US')},
-    {'name' : 'Hindi', 'locale': Locale('hi','IN')},
+    {'name' : 'हिंदी', 'locale': Locale('hi','IN')},
+    {'name' : 'عربي', 'locale': Locale('ar', 'AA')},
   ];
 
   updateLanguage(Locale locale){
     Get.back();
     Get.updateLocale(locale);
-    // _onSelectedLanguage(languageCode)
   }
 
   buildDialog(BuildContext context) {
@@ -799,7 +798,6 @@ class _ProductListGetState extends State<ProductListGet> {
                         String localeValue = locale[index]['locale'].toString();
                         List<String> localeParts = localeValue.split('_');
                         String languageCode = localeParts[0];
-                        print(languageCode);
                         String countryCode = localeParts[1];
                         _onSelectedLanguage(languageCode, countryCode);
                       },

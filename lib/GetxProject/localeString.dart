@@ -256,5 +256,133 @@ class LocaleString extends Translations{
       'Please verify OTP sent to your mail!' : 'कृपया आपके मेल पर भेजे गए ओटीपी को जाँच करें!',
       'Email already registered!! try using another EmailId' : 'ईमेल पहले से ही रजिस्टर है!! किसी अन्य ईमेल आईडी का उपयोग करने का प्रयास करें',
     },
+
+
+
+    // Arabic Language Translator
+
+    'ar_AA' : {
+      // For HomePage
+      'hello' : 'مرحبًا',
+      'Products' : 'منتجات',
+      'Oops!! No Internet Connection' : 'أُووبس!! لا يوجد اتصال بالإنترنت',
+      'Search Products' : 'البحث عن المنتجات',
+      'eshop' : 'متجر',
+
+      // SnackBars
+      'Item Already Added' : 'تمت إضافة العنصر بالفعل',
+      'Item Added to Cart' : 'تمت إضافة العنصر إلى عربة التسوق',
+      'Item will be Added to Cart. Please Wait!!!' : 'سيتم إضافة العنصر إلى عربة التسوق. انتظر من فضلك!!!',
+
+      // BottomNavigationBar
+      'Home' : 'بيت',
+      'History' : 'تاريخ',
+      'Cart' : 'عربة التسوق',
+      'Favorite' : 'مفضل',
+      'Accounts' : 'حسابات',
+
+      // AccountSettings
+      'Hello,' : 'مرحبًا،',
+      'Welcome to eshop' : 'مرحبًا بكم في متجر eshop',
+      'My Profile' : 'ملفي',
+      'Change Password' : 'تغيير كلمة المرور',
+      'Log Out' : 'تسجيل خروج',
+      'Order History' : 'تاريخ الطلب',
+
+      // Cart Page
+      'My Cart' : 'عربة التسوق الخاصة بي',
+      'Your Cart Is Empty!!' : 'عربة التسوق فارغة!!',
+      'Sub-total' : 'المجموع الفرعي',
+      'VAT (%)' : 'ضريبة القيمة المضافة (٪)',
+      'Total' : 'المجموع',
+      'Order Placed🎉' : 'تم تقديم الطلب🎉',
+      'Your Order Placed Successfully!!' : 'تم تقديم طلبك بنجاح !!',
+      'Hey' : 'يا',
+      'Your order is successfully placed! View your order details here' : 'تم تقديم طلبك بنجاح! عرض تفاصيل طلبك هنا',
+      'Checkout' : 'الدفع',
+
+      // Change Password Page
+      ' Your Password Changed Successfully' : 'تم تغيير كلمة المرور الخاصة بك بنجاح',
+      'e' : 'ه',
+      'shop' : 'محل',
+      'Change your Password' : 'غير كلمة المرور الخاصة بك',
+      'Your new password must be different form your previous password.' : 'يجب أن تكون كلمة مرورك الجديدة مختلفة عن كلمة مرورك السابقة.',
+      'please enter some text' : 'الرجاء إدخال نص',
+      'New password' : 'كلمة المرور الجديدة',
+      'password doesn\'t match' : 'كلمة المرور غير متطابقة',
+      'Re-enter new password' : 'أعد إدخال كلمة المرور الجديدةं',
+      'Change' : 'يتغير',
+
+      // Favorite Page
+      'Wishlist' : 'قائمة الرغبات',
+      'Your Favorite Is Empty!!' : 'المفضلة لديك فارغة !!',
+      'Item Removed from Favorite' : 'تمت إزالة العنصر من المفضلة',
+
+      // Forgot Password Page
+      'Please verify otp sent to your email!' : 'يرجى التحقق من إرسال OTP إلى بريدك الإلكتروني!',
+      'This Email Id is not Registered With us kindly register first!' : 'معرف البريد الإلكتروني هذا غير مسجل معنا ، يرجى التسجيل أولاً!',
+      'Recover your Password' : 'استعادة كلمة المرور الخاصة بك',
+      'Your password is sent to your registered phone no. or email you enter here.' : 'يتم إرسال كلمة المرور الخاصة بك إلى رقم هاتفك المسجل. أو البريد الإلكتروني الذي تدخله هنا.',
+      'please enter valid email' : 'الرجاء إدخال بريد إلكتروني صحيح',
+      'E - Mail' : 'بريد إلكتروني',
+      'Recover' : 'استعادة',
+
+      //Login Page
+      'Welcome to ' : 'مرحبا بك في',
+      'Please enter your email below to start using app.' : 'الرجاء إدخال بريدك الإلكتروني أدناه لبدء استخدام التطبيق.',
+      'Password' : 'كلمة المرور',
+      'Forgot password?' : 'هل نسيت كلمة السر؟',
+      'Sign in' : 'تسجيل الدخول',
+      'Not a member?' : 'ليس عضوا؟',
+      'Join now' : 'نضم الان',
+
+      // My Profile Page
+      'Profile' : 'حساب تعريفي',
+      'Member' : 'عضو',
+
+      // Order History Page
+      'My Orders' : 'طلباتي',
+      'Your haven\'t ordered anything yet!!' : 'لم تطلب أي شيء حتى الآن !!',
+      '#id: ' : '#بطاقة تعريف:',
+      'Ordered on : ' : 'طلبت في:',
+      'Items: ' : 'أغراض:',
+
+      // OTP on Forgot Password Page
+      'OTP Verified Successfully And password sent to your Mail!' : 'تم التحقق من OTP بنجاح وتم إرسال كلمة المرور إلى بريدك!',
+      'Invalid OTP!' : 'OTP غير صحيح!',
+      'OTP Authentication' : 'مصادقة OTP',
+      'An Authentication code has been send to Example@gmail.com' : 'تم إرسال رمز المصادقة إلى Example@gmail.com',
+      'Didn\'t receive the code?' : 'ألم يصلك الرمز؟',
+      'Try again in' : 'حاول مرة أخرى في',
+      'Resend' : 'फإعادة إرسال',
+      'Continue' : 'يكمل',
+
+      // OTP on Register
+      'You have successfully registered!' : 'لقد قمت بالتسجيل بنجاح!',
+
+      // Product Details Page
+      'reviews' : 'المراجعات',
+      'VAT included' : 'شامل ضريبة القيمة المضافة',
+      'Details:' : 'वتفاصيل:',
+      'Add to cart' : 'أضف إلى السلة',
+      'Added to cart' : 'تمت الإضافة إلى عربة التسوق',
+
+      // Register Page
+      'Create a new account' : 'انشاء حساب جديد',
+      'Please put your information below to crete a new account for using our app.' : 'يرجى وضع المعلومات الخاصة بك أدناه لإنشاء حساب جديد لاستخدام التطبيق لدينا.',
+      'Full Name' : 'الاسم الكامل',
+      'please enter valid phone no.' : 'الرجاء إدخال رقم هاتف صالح.',
+      'Phone No.' : 'رقم الهاتف.',
+      'password not match' : 'كلمة السر ليست جيدة',
+      'Re-enter Password' : 'إعادة إدخال كلمة المرورं',
+      'Register Now' : 'سجل الان',
+      'Already have an account?' : 'هل لديك حساب؟',
+
+      // Authentication Controller
+      'Error!!!' : 'خطأ!!!',
+      'Invalid username or password!' : 'خطأ في اسم المستخدم أو كلمة مرور!',
+      'Please verify OTP sent to your mail!' : 'يرجى التحقق من إرسال OTP إلى بريدك!',
+      'Email already registered!! try using another EmailId' : 'البريد الإلكتروني مسجل مسبقا!! حاول استخدام معرف بريد إلكتروني آخر',
+    },
   };
 }

@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:online_ordering_system/GetxProject/ControllerGetx/imageControllerGetx.dart';
 
 class MyAccountPageGet extends StatefulWidget {
   const MyAccountPageGet({Key? key}) : super(key: key);
@@ -10,9 +13,15 @@ class MyAccountPageGet extends StatefulWidget {
 
 class _MyAccountPageGetState extends State<MyAccountPageGet> {
   Map<String, dynamic> argument = {};
+  ImageControllerGetx imageController = Get.put(ImageControllerGetx());
+  onPictureSelection() async {
+      imageController.getImage();
+  }
+
   @override
   Widget build(BuildContext context) {
-    argument = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    argument =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -49,68 +58,60 @@ class _MyAccountPageGetState extends State<MyAccountPageGet> {
             ),
           ),
         ),
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.only(top: 10, right: 10),
-        //     child: TextButton(
-        //       onPressed: () {},
-        //       child: Text(
-        //         'Confirm',
-        //         style: TextStyle(
-        //           color: Color.fromARGB(240, 240, 109, 86),
-        //           fontFamily: 'NotoSans',
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 30.0, left: 30, right: 30),
+        padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
         child: Column(
           children: [
-            Stack(children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.15,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/145926.png'),
-                    fit: BoxFit.contain,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.6),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
+            GetBuilder<ImageControllerGetx>(
+              init: ImageControllerGetx(),
+              builder: (context) {
+                return Stack(children: [
+                  Container(
+                    height: Get.height * 0.15,
+                    decoration: BoxDecoration(
+                      image: context.imagePath == '' ? DecorationImage(
+                        image: AssetImage('assets/145926.png'),
+                        fit: BoxFit.contain,
+                      ) : DecorationImage(
+                        image: FileImage(File(context.imagePath)),
+                        fit: BoxFit.contain,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.6),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                      shape: BoxShape.circle,
                     ),
-                  ],
-                  shape: BoxShape.circle,
-                ),
-              ),
-              Positioned(
-                right: 115,
-                bottom: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
+                  ),
+                  Positioned(
+                    right: 115,
+                    bottom: 0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white, width: 2),
+                        shape: BoxShape.circle,
+                        color: Color.fromARGB(240, 240, 109, 86),
+                      ),
+                      height: 35,
+                      width: 35,
+                      child: IconButton(
+                        onPressed: () {
+                          onPictureSelection();
+                        },
+                        icon: Icon(Icons.camera_alt),
+                        iconSize: 15,
                         color: Colors.white,
-                        width: 2
+                      ),
                     ),
-                    shape: BoxShape.circle,
-                    color: Color.fromARGB(240, 240, 109, 86),
                   ),
-                  height: 35,
-                  width: 35,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.camera_alt),
-                    iconSize: 15,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ]),
+                ]);
+              }
+            ),
             SizedBox(
               height: 20,
             ),
@@ -130,7 +131,9 @@ class _MyAccountPageGetState extends State<MyAccountPageGet> {
                 color: Colors.grey,
               ),
             ),
-            SizedBox(height: 30,),
+            SizedBox(
+              height: 30,
+            ),
             Column(
               children: [
                 TextFormField(
@@ -148,7 +151,9 @@ class _MyAccountPageGetState extends State<MyAccountPageGet> {
                         fontFamily: 'NotoSans',
                       )),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
                   controller: TextEditingController(),
                   readOnly: true,
@@ -164,7 +169,9 @@ class _MyAccountPageGetState extends State<MyAccountPageGet> {
                         fontFamily: 'NotoSans',
                       )),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
                   readOnly: true,
                   controller: TextEditingController(),

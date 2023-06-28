@@ -76,7 +76,8 @@ class _LoginPageGetState extends State<LoginPageGet> {
             ],
           ),
         ),
-      ) : Scaffold(
+      ) :
+      Scaffold(
         body: Padding(
           padding: EdgeInsets.only(left: 15, right: 15, top: 10),
           child: SingleChildScrollView(

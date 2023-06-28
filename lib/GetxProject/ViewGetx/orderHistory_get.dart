@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:online_ordering_system/GetxProject/ControllerGetx/cartControllerGetx.dart';
 import 'package:online_ordering_system/GetxProject/ControllerGetx/orderHistoryControllerGetx.dart';
 
@@ -206,9 +207,11 @@ class _OrderHistoryPageGetState extends State<OrderHistoryPageGet> {
                                 ),
                                 Text(
                                   'Ordered on : '.tr +
-                                      orderListControllerGetx
-                                          .orderGet.data[index].updatedAt
-                                          .toString(),
+                                      // orderListControllerGetx
+                                      //     .orderGet.data[index].updatedAt
+                                      //     .toString(),
+                                      DateFormat("dd MMM hh:mm a y").format(orderListControllerGetx
+                                            .orderGet.data[index].updatedAt.toLocal()),
                                   style: TextStyle(
                                     fontFamily: 'NotoSans',
                                     fontWeight: FontWeight.w100,
