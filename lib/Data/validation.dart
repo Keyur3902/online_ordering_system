@@ -6,11 +6,11 @@ class Validation{
     return regExp.hasMatch(value);
   }
 
-  // static bool validatePassword(String value){
-  //   String passwordExp = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-  //   RegExp regExp = RegExp(passwordExp);
-  //   return regExp.hasMatch(value);
-  // }
+  static bool validatePassword(String value){
+    String passwordExp = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regExp = RegExp(passwordExp);
+    return regExp.hasMatch(value);
+  }
 
   static bool validatePhone(String value){
     String phoneExp = r"^[0-9]{10}$";

@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:online_ordering_system/BlocProject/mainBloc.dart';
 import 'package:online_ordering_system/GetxProject/mainGet.dart';
 import 'package:online_ordering_system/Screens/accountSettingPage.dart';
 import 'package:online_ordering_system/Screens/authentication.dart';
@@ -39,15 +40,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  FlutterError.onError = (errorDetails) {
-    // If you wish to record a "non-fatal" exception, please use `FirebaseCrashlytics.instance.recordFlutterError` instead
-    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  };
-  PlatformDispatcher.instance.onError = (error, stack) {
-    // If you wish to record a "non-fatal" exception, please remove the "fatal" parameter
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
+  // FlutterError.onError = (errorDetails) {
+  //   // If you wish to record a "non-fatal" exception, please use `FirebaseCrashlytics.instance.recordFlutterError` instead
+  //   FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  // };
+  // PlatformDispatcher.instance.onError = (error, stack) {
+  //   // If you wish to record a "non-fatal" exception, please remove the "fatal" parameter
+  //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+  //   return true;
+  // };
 
   if (DefaultFirebaseOptions.currentPlatform == DefaultFirebaseOptions.ios) {
   } else {
@@ -60,7 +61,8 @@ void main() async {
 
   }
 // runApp(const MyApp());
-runApp(const GetApp());
+// runApp(const GetApp());
+runApp(const BlocApp());
 }
 
 

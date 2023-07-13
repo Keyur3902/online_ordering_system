@@ -1,0 +1,11 @@
+abstract class AuthenticationOnForgotPassState {}
+
+class AuthenticationOnForgotPassInitialState extends AuthenticationOnForgotPassState {}
+
+class AuthenticationOnForgotPassLoadingState extends AuthenticationOnForgotPassState {}
+
+class AuthenticationOnForgotPassSuccessState extends AuthenticationOnForgotPassState {}
+
+class AuthenticationOnForgotPassFailedState extends AuthenticationOnForgotPassState {}
+
+class AuthenticationResendOtpState extends AuthenticationOnForgotPassState {}
